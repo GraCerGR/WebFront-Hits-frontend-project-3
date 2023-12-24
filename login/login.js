@@ -16,6 +16,9 @@ async function post(url, data = null) {
         token = data.token;
         // Далее можно выполнять другие действия с полученным токеном
         // Например, сохранить его в localStorage и перенаправить пользователя на другую страницу
+        localStorage.setItem('token', token);
+        // Перенаправляем пользователя на страницу patients.html
+        window.location.href = '../patients/patient.html';
       } else {
         // Если ошибка, выводим сообщение об ошибке
         alert(data.message || 'Неверный логин или пароль');
