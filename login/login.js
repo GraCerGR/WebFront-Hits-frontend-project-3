@@ -27,19 +27,22 @@ async function post(url, data = null) {
     });
 }
   const url = "https://mis-api.kreosoft.space/api/doctor/login";
-const loginButton = document.getElementById('loginButton');
-if (loginButton){
-loginButton.addEventListener('click', function() {
-  const email = document.getElementById('Email').value;
-  const password = document.getElementById('password').value;
+  const form = document.querySelector('form');
+  if (form) {
+    form.addEventListener('submit', function(event) {
+      event.preventDefault(); // Предотвращаем отправку формы
   
-  const data = {
-    email: email,
-    password: password
-  };
-console.log(data);
-post(url, data);
-console.log(token);
-});}
+      const email = document.getElementById('Email').value;
+      const password = document.getElementById('password').value;
+      const data = {
+        email: email,
+        password: password
+      };
+  
+      console.log(data);
+      post(url, data);
+      console.log(token);
+    });
+  }
 
 //export { token };
