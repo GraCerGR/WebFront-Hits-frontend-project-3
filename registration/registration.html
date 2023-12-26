@@ -101,8 +101,9 @@
     <input type="text" class="form-control" id="inputAddress2" placeholder="Квартира">
   </div>
   <div class="col-12">
-    <label for="inputEmail" class="form-label">Email</label>
-    <input type="email" class="form-control" id="inputEmail" placeholder="name@example.com">
+    <label for="Email">Email</label>
+    <input id="Email" type="email" class="form-control" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
+    <div class="invalid-feedback">Пожалуйста, введите действительный email адрес.</div>
   </div>
   <div class="col-12">
     <label for="inputPassword" class="form-label">Пароль</label>
