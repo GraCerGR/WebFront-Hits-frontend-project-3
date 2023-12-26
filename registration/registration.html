@@ -48,12 +48,11 @@
 <form class="row g-3">
   <div class="col-12">
     <label for="inputName" class="form-label">Имя</label>
-    <input type="text" class="form-control" id="inputName" placeholder="Иванов Иван Иванович">
+    <input type="text" class="form-control" id="inputName" placeholder="Иванов Иван Иванович" required minlength="1" maxlength="1000">
   </div>
   <div class="col-md-6">
     <label for="selectGender" class="form-label">Пол</label>
-    <select class="form-select" id="selectGender">
-      <option selected disabled>Выберите пол</option>
+    <select class="form-select" id="selectGender" required>
       <option value="male">Мужской</option>
       <option value="female">Женский</option>
     </select>
@@ -64,7 +63,7 @@
   </div>
   <div class="col-12">
     <label for="inputTel" class="form-label">Телефон</label>
-    <input type="tel" class="form-control" id="inputTel" placeholder="+7 (xxx) xxx-xx-xx" pattern="\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}" required>
+    <input type="tel" class="form-control" id="inputTel" placeholder="+7 (xxx) xxx-xx-xx" pattern="\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}">
     <div class="invalid-feedback">Пожалуйста, введите действительный номер телефона в формате +7 (xxx) xxx-xx-xx.</div>
   </div>
   
@@ -107,7 +106,7 @@
   </div>
   <div class="col-12">
     <label for="inputPassword" class="form-label">Пароль</label>
-    <input type="password" class="form-control" id="inputPassword" placeholder="">
+    <input type="password" class="form-control" id="inputPassword" required required minlength="6">
   </div>
   <div class="form-group text-center">
     <button type="submit" class="btn btn-primary">Войти в систему</button>
