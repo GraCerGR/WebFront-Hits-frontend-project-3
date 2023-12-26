@@ -51,3 +51,59 @@ function populateSpecialties(specialties) {
       selectSpecialties.appendChild(option);
     });
   }
+
+  
+  // Функция для выполнения POST-запроса
+async function registerPost(data) {
+    const url = 'https://mis-api.kreosoft.space/api/doctor/register';
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.text())
+    .then(result => {
+      console.log(result);
+      // Добавьте здесь код для обработки успешного ответа от сервера
+    })
+    .catch(error => {
+      console.error('Ошибка', error);
+      // Добавьте здесь код для обработки ошибки
+    });
+  }
+  
+  // Обработчик отправки формы
+  const form = document.querySelector('form');
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+  
+    // Получение значений полей формы
+    const name = document.getElementById('inputName').value;
+    const password = document.getElementById('inputPassword').value;
+    const email = document.getElementById('Email').value;
+    const birthday = document.getElementById('inputData').value;
+    const gender = document.getElementById('selectGender').value;
+    const phone = document.getElementById('inputTel').value;
+    const speciality = document.getElementById('selectSpecialties').value;
+  
+    // Создание объекта с данными для отправки
+    const data = {
+      name: name,
+      password: password,
+      email: email,
+      birthday: birthday,
+      gender: gender,
+      phone: phone,
+      speciality: speciality
+    };
+
+    if (!phone) {
+        data.phone = null;
+      }
+  
+    console.log(data);
+    // Выполнение POST-запроса
+    registerPost(data);
+  });
