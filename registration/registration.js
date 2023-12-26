@@ -63,23 +63,40 @@ async function registerPost(data) {
       },
       body: JSON.stringify(data)
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(result => {
-      console.log(result);
-      // Добавьте здесь код для обработки успешного ответа от сервера
-    })
+        console.log(result);
+        const errorMessage = document.getElementById('errorMessage');
+        errorMessage.textContent = '';
+
+        if (result.message) {
+            errorMessage.textContent = result.message;
+            console.log(result.message);
+          }
+
+          if (result.title) {
+            errorMessage.textContent = result.title;
+            console.log(result.title);
+          }
+
+          if (result.token) {
+            token = result.token;
+            localStorage.setItem('token', token);
+            window.location.href = '../patients/patient.html';
+          }
+      })
     .catch(error => {
-      console.error('Ошибка', error);
-      // Добавьте здесь код для обработки ошибки
-    });
+        console.error('Ошибка', error);
+        const errorMessage = document.getElementById('errorMessage');
+        errorMessage.textContent = 'Произошла ошибка при регистрации. Пожалуйста, попробуйте еще раз.';
+      });
   }
-  
-  // Обработчик отправки формы
-  const form = document.querySelector('form');
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-  
-    // Получение значений полей формы
+
+const form = document.querySelector('form');
+if (form) {
+  form.addEventListener('submit', function(event) {
+    event.preventDefault(); // Предотвращаем отправку формы
+
     const name = document.getElementById('inputName').value;
     const password = document.getElementById('inputPassword').value;
     const email = document.getElementById('Email').value;
@@ -107,3 +124,5 @@ async function registerPost(data) {
     // Выполнение POST-запроса
     registerPost(data);
   });
+}
+  
