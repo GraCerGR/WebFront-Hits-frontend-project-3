@@ -52,8 +52,8 @@
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Вход</a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Профиль</a></li>
-                <li><a class="dropdown-item" href="#">Выход</a></li>
+                <li><a class="dropdown-item" href="../profile/profile.html">Профиль</a></li>
+                <li><a class="dropdown-item" href="../login/login.html">Выход</a></li>
               </ul>
             </li>
           </ul>
@@ -64,27 +64,27 @@
 <form class="row g-3">
   <div class="col-12">
     <label for="inputName" class="form-label">Имя</label>
-    <input type="text" class="form-control" id="inputName" placeholder="Иванов Иван Иванович" required minlength="1" maxlength="1000">
+    <input type="text" class="form-control" id="inputName" placeholder="Иванов Иван Иванович" required minlength="1" maxlength="1000" disabled>
   </div>
   <div class="col-md-6">
     <label for="selectGender" class="form-label">Пол</label>
-    <select class="form-select" id="selectGender" required>
-      <option value="male">Мужской</option>
-      <option value="female">Женский</option>
+    <select class="form-select" id="selectGender" required disabled>
+      <option value="Male">Мужской</option>
+      <option value="Female">Женский</option>
     </select>
   </div>
   <div class="col-md-6">
     <label for="inputData" class="form-label">Дата рождения</label>
-    <input type="date" class="form-control" id="inputData">
+    <input type="date" class="form-control" id="inputData" disabled>
   </div>
   <div class="col-12">
     <label for="inputTel" class="form-label">Телефон</label>
-    <input type="tel" class="form-control" id="inputTel" placeholder="+7 (xxx) xxx-xx-xx" pattern="\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}">
+    <input type="tel" class="form-control" id="inputTel" placeholder="+7 (xxx) xxx-xx-xx" pattern="\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}" disabled>
     <div class="invalid-feedback">Пожалуйста, введите действительный номер телефона в формате +7 (xxx) xxx-xx-xx.</div>
   </div>
   <div class="col-12">
     <label for="Email">Email</label>
-    <input id="Email" type="email" class="form-control" placeholder="Email" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" required>
+    <input id="Email" type="email" class="form-control" placeholder="Email" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" required disabled>
     <div class="invalid-feedback">Пожалуйста, введите действительный email адрес.</div>
   </div>
   <div class="form-group text-center">
@@ -94,7 +94,7 @@
 </form>
 </div>
 
-<script src="registration.js"></script>
+<script src="profile.js"></script>
 </body>
 
 
