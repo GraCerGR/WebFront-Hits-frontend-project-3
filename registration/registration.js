@@ -26,17 +26,28 @@ inputTel.addEventListener('input', function(e) {
 });
 
 async function get(url) {
-  return fetch(url, {
-    method: 'GET',
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log(url);
-    console.log(data);
-  })
-  .catch(error => {
-    console.error('Ошибка', error);
-  });
-}
-const url = `https://mis-api.kreosoft.space/api/dictionary/speciality`;
+    return fetch(url, {
+      method: 'GET',
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(url);
+      console.log(data);
+      populateSpecialties(data.specialties);
+    })
+    .catch(error => {
+      console.error('Ошибка', error);
+    });
+  }
+const url = `https://mis-api.kreosoft.space/api/dictionary/speciality?size=30`;
 get(url)
+
+function populateSpecialties(specialties) {
+    const selectSpecialties = document.getElementById('selectSpecialties');
+    specialties.forEach(specialty => {
+      const option = document.createElement('option');
+      option.value = specialty.id;
+      option.text = specialty.name;
+      selectSpecialties.appendChild(option);
+    });
+  }
