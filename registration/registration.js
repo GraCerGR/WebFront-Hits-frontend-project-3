@@ -25,4 +25,18 @@ inputTel.addEventListener('input', function(e) {
   e.target.value = formattedValue;
 });
 
-
+async function get(url) {
+  return fetch(url, {
+    method: 'GET',
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log(url);
+    console.log(data);
+  })
+  .catch(error => {
+    console.error('Ошибка', error);
+  });
+}
+const url = `https://mis-api.kreosoft.space/api/dictionary/speciality`;
+get(url)
