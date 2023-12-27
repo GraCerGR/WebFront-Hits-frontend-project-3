@@ -48,6 +48,68 @@
           </ul>
         </div>
       </nav>
+      <div class="container py-2">
+        <div class="row align-items-center py-1">
+          <div class="col">
+            <h1>Пациенты</h1>
+          </div>
+          <div class="col d-flex justify-content-end align-items-center">
+            <button type="button" class="btn btn-primary">+ Регистрация нового пациента</button>
+          </div>
+        </div>
+      </div>
+      <div class="container container2 py-2">
+        <div>
+          <form>
+            <div class="col">
+              <h3>Фильтрация и сортировка</h3>
+            </div>
+            <div class="row align-items-end py-1">
+            <div class="col-md-6 ">
+              <label for="inputTel" class="form-label">Имя</label>
+              <input type="text" class="form-control" placeholder="Имя">
+            </div>
+            <div class="col-md-6 ">
+              <label for="inputTel" class="form-label">Имеющиеся заключения</label>
+              <select id="conclusionsSelect" class="form-select" aria-label="Пример выбора по умолчанию">
+                <option value="" selected>Имеющиеся заключения</option>
+              </select>
+            </div>
+          </div>
+
+              <div class="row align-items-end py-1">
+                <div class="col form-check form-switch d-flex justify-content-center">
+                  <input class="form-check-input" type="checkbox" role="switch" id="scheduledVisitsSwitch">
+                  <label class="form-check-label" for="scheduledVisitsSwitch">Есть запланированные визиты</label>
+                </div>
+                <div class="col form-check form-switch d-flex justify-content-center">
+                  <input class="form-check-input" type="checkbox" role="switch" id="myPatientsSwitch">
+                  <label class="form-check-label" for="myPatientsSwitch">Мои пациенты</label>
+                </div>
+                <div class="col ">
+                  <label for="inputTel" class="form-label">Сортировка пациентов</label>
+                  <select id="sortSelect" class="form-select" aria-label="Пример выбора по умолчанию">
+                    <option value="" selected>Сортировка</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row  align-items-end py-1">
+                  <div class="col-4">
+                    <label for="inputTel" class="form-label">Число пациентов на странице</label>
+                    <input type="text" class="form-control" placeholder="">
+                  </div>
+                  <div class="col">
+                  </div>
+                  <div class="col d-flex justify-content-end align-items-center ">
+                    <div>
+                      <button type="button" class="btn btn-primary">Поиск</button>
+                    </div>
+                </div>
+              </div>
+          </form>
+        </div>
+      </div>
 
 </body>
 
