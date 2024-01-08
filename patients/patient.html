@@ -58,7 +58,7 @@
           </div>
         </div>
       </div>
-      <div class="container container2 py-2">
+      <div class="container container2 py-2 my-2">
         <div>
           <form>
             <div class="col">
@@ -66,13 +66,15 @@
             </div>
             <div class="row align-items-end py-1">
             <div class="col-md-6 ">
-              <label for="inputTel" class="form-label">Имя</label>
-              <input type="text" class="form-control" placeholder="Имя">
+              <label for="inputName" class="form-label">Имя</label>
+              <input type="text" class="form-control" placeholder="Имя" id="inputName">
             </div>
-            <div class="col-md-6 ">
-              <label for="inputTel" class="form-label">Имеющиеся заключения</label>
-              <select id="conclusionsSelect" class="form-select" aria-label="Пример выбора по умолчанию">
-                <option value="" selected>Имеющиеся заключения</option>
+            <div class="col-md-6">
+              <label for="conclusionsSelect" class="form-label">Имеющиеся заключения</label>
+              <select multiple id="conclusionsSelect" class="form-select" size="1">
+                <option value="Recovery">Выздоровление</option>
+                <option value="Disease">Болезнь</option>
+                <option value="Death">Смерть</option>
               </select>
             </div>
           </div>
@@ -87,28 +89,37 @@
                   <label class="form-check-label" for="myPatientsSwitch">Мои пациенты</label>
                 </div>
                 <div class="col ">
-                  <label for="inputTel" class="form-label">Сортировка пациентов</label>
+                  <label for="sortSelect" class="form-label">Сортировка пациентов</label>
                   <select id="sortSelect" class="form-select" aria-label="Пример выбора по умолчанию">
-                    <option value="" selected>Сортировка</option>
+                    <option value="NameAsc">по имени (по возрастанию)</option>
+                    <option value="NameDesc">по имени (по убыванию)</option>
+                    <option value="CreateAsc">по дате создания (по возрастанию)</option>
+                    <option value="CreateDesc">по дате создания (по убыванию)</option>
+                    <option value="InspectionAsc">по дате осмотра (по возрастанию)</option>
+                    <option value="InspectionDesc">по дате осмотра (по убыванию)</option>
                   </select>
                 </div>
               </div>
 
               <div class="row  align-items-end py-1">
                   <div class="col-4">
-                    <label for="inputTel" class="form-label">Число пациентов на странице</label>
-                    <input type="text" class="form-control" placeholder="">
+                    <label for="pageSizeInput" class="form-label">Число пациентов на странице</label>
+                    <input type="text" class="form-control" placeholder="" id="pageSizeInput">
                   </div>
                   <div class="col">
                   </div>
                   <div class="col d-flex justify-content-end align-items-center ">
                     <div>
-                      <button type="button" class="btn btn-primary">Поиск</button>
+                      <button type="button" class="btn btn-primary" id="searchButton">Поиск</button>
                     </div>
                 </div>
               </div>
           </form>
         </div>
+      </div>
+
+      <div class="container">
+        <div class="row list">
       </div>
 
 </body>
