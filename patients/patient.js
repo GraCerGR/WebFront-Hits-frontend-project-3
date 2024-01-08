@@ -31,12 +31,18 @@ function createCard(data) {
     const cardContainerWrapper = document.querySelector('.row.list');
     data.patients.forEach(patient => {
       const cardContainer = document.createElement('div');
-      cardContainer.classList.add('col-lg-6', 'container', 'container2', 'p-2', 'my-2');
-      cardContainer.innerHTML = `
+      cardContainer.classList.add('col-lg-6');
+      
+      const container2 = document.createElement('div');
+      container2.classList.add('container2', 'container', 'p-2', 'my-2');
+      
+      container2.innerHTML = `
           <h6>${patient.name}</h6>
           Пол: ${patient.gender === 'Male' ? 'Мужчина' : patient.gender === 'Female' ? 'Женщина' : 'Не указано'}<BR>
           Дата рождения - ${patient.birthday ? patient.birthday.split('T')[0] : 'Не указано'}<BR>
       `;
+      
+      cardContainer.appendChild(container2);
       cardContainerWrapper.appendChild(cardContainer);
     });
   }
@@ -74,6 +80,74 @@ function createCard(data) {
     get(url, token);
   }
 
+  function updatePagination(maxPagination) {
+    const pagination = document.getElementById('pagination');
+    pagination.innerHTML = '';
+  
+    const currentPage = parseInt(page); // текущая страница
+    const totalPages = maxPagination; // общее количество страниц
+    let startPage, endPage;
+    if (totalPages <= 5) {
+      // Если общее количество страниц меньше или равно 5, то отображаем все страницы
+      startPage = 1;
+      endPage = totalPages;
+      console.log(page)
+    } else {
+      // Иначе вычисляем начальную и конечную страницы
+      if (currentPage <= 3) {
+        startPage = 1;
+        endPage = 5;
+        console.log(page)
+      } else if (currentPage + 2 >= totalPages) {
+        console.log(currentPage + 2)
+        console.log(totalPages)
+        startPage = totalPages - 4;
+        endPage = totalPages;
+        console.log(totalPages)
+      } else {
+        startPage = currentPage - 2;
+        endPage = currentPage + 2;
+        console.log(page)
+      }
+    }
+  
+    // Создаем элементы для номеров страниц и добавляем их в пагинацию
+    for (let i = startPage; i <= endPage; i++) {
+      const li = document.createElement('li');
+      li.classList.add('page-item');
+      const a = document.createElement('a');
+      a.classList.add('page-link');
+      a.href = '#';
+      a.innerText = i;
+      console.log(i);
+      if (i === currentPage) {
+        li.classList.add('active'); // выделяем текущую страницу
+      }
+      li.appendChild(a);
+      pagination.appendChild(li);
+    }
+  
+    const firstPageLink = document.createElement('a');
+    firstPageLink.classList.add('page-link');
+    firstPageLink.href = '#';
+    firstPageLink.innerHTML = '&laquo;';
+    const lastPageLink = document.createElement('a');
+    lastPageLink.classList.add('page-link');
+    lastPageLink.href = '#';
+    lastPageLink.innerHTML = '&raquo;';
+  
+    const firstPageItem = document.createElement('li');
+    firstPageItem.classList.add('page-item');
+    firstPageItem.appendChild(firstPageLink);
+    const lastPageItem = document.createElement('li');
+    lastPageItem.classList.add('page-item');
+    lastPageItem.appendChild(lastPageLink);
+  
+    pagination.insertBefore(firstPageItem, pagination.firstChild);
+    pagination.appendChild(lastPageItem);
+  }
+
+
   document.getElementById('searchButton').addEventListener('click',searchPatients);
 
   pagination.addEventListener('click', (event) => {
@@ -105,43 +179,4 @@ function createCard(data) {
     
     searchPatients(page);
   });
-
-
-
-  function updatePagination(maxPagination) {
-    while (pagination.firstChild) {
-      pagination.removeChild(pagination.firstChild);
-    }
-  
-  for (let i = 1; i <= maxPagination; i++) {
-    //console.log(maxPagination);
-    const li = document.createElement('li');
-    li.classList.add('page-item');
-    const a = document.createElement('a');
-    a.classList.add('page-link');
-    a.href = '#';
-    a.innerText = i;
-    li.appendChild(a);
-    pagination.appendChild(li);
-  }
-  const firstPageLink = document.createElement('a');
-  firstPageLink.classList.add('page-link');
-  firstPageLink.href = '#';
-  firstPageLink.innerHTML = '&laquo;'; // Символ «
-  const lastPageLink = document.createElement('a');
-  lastPageLink.classList.add('page-link');
-  lastPageLink.href = '#';
-  lastPageLink.innerHTML = '&raquo;'; // Символ »
-  
-  const firstPageItem = document.createElement('li');
-  firstPageItem.classList.add('page-item');
-  firstPageItem.appendChild(firstPageLink);
-  
-  const lastPageItem = document.createElement('li');
-  lastPageItem.classList.add('page-item');
-  lastPageItem.appendChild(lastPageLink);
-  
-  pagination.insertBefore(firstPageItem, pagination.firstChild);
-  pagination.appendChild(lastPageItem);
-  }
   

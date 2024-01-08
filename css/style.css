@@ -210,3 +210,21 @@
 }
 
 
+#pagination span {
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+#pagination span.active {
+  font-weight: bold;
+}
+
+#pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.pagination li {
+  display: inline-block;
+  margin: 0 5px;
+}
