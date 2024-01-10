@@ -30,12 +30,14 @@ get(url, token)
 function createCard(data) {
     const cardContainerWrapper = document.querySelector('.row.list');
     data.patients.forEach(patient => {
+
       const cardContainer = document.createElement('div');
       cardContainer.classList.add('col-lg-6');
       
       const container2 = document.createElement('div');
       container2.classList.add('container2', 'container', 'p-2', 'my-2');
-      
+      const queryString = new URLSearchParams(patient.id).toString();
+      const url = `/patient/patient.html?${queryString}`;
       container2.innerHTML = `
           <h6>${patient.name}</h6>
           Пол: ${patient.gender === 'Male' ? 'Мужчина' : patient.gender === 'Female' ? 'Женщина' : 'Не указано'}<BR>
@@ -44,6 +46,9 @@ function createCard(data) {
       
       cardContainer.appendChild(container2);
       cardContainerWrapper.appendChild(cardContainer);
+      cardContainer.addEventListener('click', () => {
+        window.location.href = url;
+      });
     });
   }
   
@@ -201,7 +206,7 @@ function createCard(data) {
             errorMessage.textContent = result.message;
             console.log(result.message);
           }
-          
+
           if (result.title) {
             errorMessage.textContent = result.title;
             console.log(result.title);

@@ -82,7 +82,7 @@ async function registerPost(data) {
           if (result.token) {
             token = result.token;
             localStorage.setItem('token', token);
-            window.location.href = '../patients/patient.html';
+            window.location.href = '../patients/patients.html';
           }
       })
     .catch(error => {
