@@ -179,4 +179,60 @@ function createCard(data) {
     
     searchPatients(page);
   });
+
+
+  async function CreatePatientPost(data, token) {
+    const url = 'https://mis-api.kreosoft.space/api/patient';
+    return fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${token}`
+      })
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log(result);
+        const errorMessage = document.getElementById('errorMessage');
+        errorMessage.textContent = '';
+
+        if (result.message) {
+            errorMessage.textContent = result.message;
+            console.log(result.message);
+          }
+          
+          if (result.title) {
+            errorMessage.textContent = result.title;
+            console.log(result.title);
+          }
+
+        console.log(result);
+      })
+    .catch(error => {
+        console.error('Ошибка', error);
+        const errorMessage = document.getElementById('errorMessage');
+        errorMessage.textContent = 'Произошла ошибка при создании пациента. Пожалуйста, попробуйте еще раз.';
+      });
+  }
+
+
+  document.querySelector('#registrationModal .btn-primary').addEventListener('click', function() {
+    const name = document.querySelector('#fullNameInput').value;
+    const gender = document.querySelector('#genderSelect').value;
+    const birthdate = document.querySelector('#birthdateInput').value;
+  
+    // Выполните необходимые действия с полученными данными (например, отправьте их на сервер)
+    
+    const patient = {
+      name: name,
+      birthday: birthdate + 'T00:00:00.000Z',
+      gender: gender
+    };
+
+    CreatePatientPost(patient, token);
+
+    const registrationModal = new bootstrap.Modal(document.getElementById('registrationModal'));
+    registrationModal.hide();
+  });
   

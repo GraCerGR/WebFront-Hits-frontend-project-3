@@ -54,7 +54,7 @@
             <h1>Пациенты</h1>
           </div>
           <div class="col d-flex justify-content-end align-items-center">
-            <button type="button" class="btn btn-primary">+ Регистрация нового пациента</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registrationModal">+ Регистрация нового пациента</button>
           </div>
         </div>
       </div>
@@ -126,6 +126,44 @@
         <ul class="pagination" id="pagination">
         </ul>
       </nav>
+
+      
+<!-- Модальное окно -->
+<div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="registrationModalLabel">Регистрация пациента</h5>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="fullNameInput" class="form-label">ФИО</label>
+            <input type="text" class="form-control" id="fullNameInput" placeholder="Введите ФИО">
+          </div>
+          <div class="row align-items-end py-1">
+          <div class="col-md-6">
+            <label for="genderSelect" class="form-label">Пол</label>
+            <select class="form-select" id="genderSelect">
+              <option value="male">Мужской</option>
+              <option value="female">Женский</option>
+            </select>
+        </div>
+          <div class="col-md-6">
+            <label for="birthdateInput" class="form-label">Дата рождения</label>
+            <input type="date" class="form-control" id="birthdateInput">
+          </div>
+        </div>
+        </form>
+      </div>
+      <div class="d-grid gap-2 col-6 mx-auto align-items-center p-2">
+        <button type="button" class="btn btn-primary">Сохранить</button>
+      </div>
+      <div id="errorMessage" class="text-danger text-center"></div>
+    </div>
+  </div>
+</div>
+
 </body>
 
 <script src="/patients/patient.js"></script>
