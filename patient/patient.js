@@ -135,6 +135,33 @@ function populateDictionary(dictionaries) {
   }
 
 
+  function searchInspection() {
+    console.log(page);
+    const dictionary = Array.from(document.getElementById('selectDictionary').selectedOptions).map(option => `icdRoots=${option.value}`).join('&');
+    const grupSwitch = document.getElementById('grupSwitch').checked;
+    const pageSize = document.getElementById('pageSizeInput').value;
+
+    const urlParams = new URLSearchParams();
+    urlParams.set('grouped', grupSwitch);
+    if (event && event.target.id === 'searchButton') {
+        page = 1; // Установите значение page равным 1 при нажатии на кнопку searchButton
+      }
+    urlParams.set('page', page); // Используйте переданную страницу
+    urlParams.set('size', pageSize);
+
+    const url = `https://mis-api.kreosoft.space/api/patient/${queryString}/inspections?${dictionary}&${urlParams.toString()}`;
+
+    const cardContainerWrapper = document.querySelector('.row.list');
+    cardContainerWrapper.innerHTML = '';
+    
+    // Выполните нужные вам действия с полученной ссылкой
+    console.log(url);
+    console.log(name);
+  
+    getInspection(url, token);
+  }
+
+
   function updatePagination(maxPagination) {
     const pagination = document.getElementById('pagination');
     pagination.innerHTML = '';
@@ -201,3 +228,36 @@ function populateDictionary(dictionaries) {
     pagination.insertBefore(firstPageItem, pagination.firstChild);
     pagination.appendChild(lastPageItem);
   }
+
+
+  document.getElementById('searchButton').addEventListener('click',searchInspection);
+
+  pagination.addEventListener('click', (event) => {
+    event.preventDefault();
+    const link = event.target;
+    if (!link.classList.contains('page-link')) {
+      return;
+    }
+    console.log(maxPagination);
+    if (link.innerText === '«') {
+        //console.log(currentPage);
+        page = page - 1; // Получаем предыдущий номер страницы
+        console.log(page);
+      } else if (link.innerText === '»') {
+        console.log(page);
+        page = parseInt(page) + 1; // Получаем следующий номер страницы
+        console.log(page);
+      }
+       if (page <= 1){
+        page = 1;
+      } else if (page >= maxPagination){
+        page = maxPagination;
+        console.log(page);
+      } 
+      if(link.innerText >= 1 && link.innerText <=maxPagination)  {
+        page = link.innerText; // Получите номер страницы из текста ссылки
+      }
+      console.log(page)
+    
+    searchInspection(page);
+  });
