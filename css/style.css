@@ -228,3 +228,11 @@
   display: inline-block;
   margin: 0 5px;
 }
+
+.background{
+  background-color: grey;
+  display: inline-block;
+  color: white;
+  border-radius: 5px;
+  padding: 4px;
+}
