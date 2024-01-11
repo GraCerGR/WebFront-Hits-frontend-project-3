@@ -10,7 +10,7 @@ async function post(url, data=null){
     }).then(response => response.json());
 }
 
-async function get(url, token) {
+async function getPatient(url, token) {
     return fetch(url, {
         method: 'GET',
         headers: new Headers({
@@ -18,30 +18,60 @@ async function get(url, token) {
         }),
     })
     .then(response => response.json())
-    .then(data => {
+    .then(async data => {
 console.log(data)
+        document.querySelector('[data-name]').textContent = data.name;
+        document.querySelector('[data-birthday]').textContent =  `Дата рождения: ${await formatBirthday(data.birthday.split('T')[0])}`;
     })
     .catch(error => {
         console.error('Ошибка', error);
     });
 }
 
-function getRatingStars(rating) {
-    const fullStars = Math.floor(rating);
-    const emptyStars = 10 - fullStars;
-    const decimalPart = rating % 1;
-    let starsHTML = '';
-    for (let i = 0; i < fullStars; i++) {
-        starsHTML += '<span class="active"></span>';
-    }
-    for (let i = 0; i < emptyStars; i++) {
-        starsHTML += '<span></span>';
-    }
-    return starsHTML;
-}
+
+async function getDictionary(url) {
+    return fetch(url, {
+      method: 'GET',
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(url);
+      console.log(data);
+      populateDictionary(data);
+    })
+    .catch(error => {
+      console.error('Ошибка', error);
+    });
+  }
 
 let queryString = window.location.search;
 queryString = queryString.slice(1,-1);
-const url = `https://mis-api.kreosoft.space/api/patient/${queryString}`;
-console.log(url);
-get(url, token);
+const urlPatient = `https://mis-api.kreosoft.space/api/patient/${queryString}`;
+console.log(urlPatient);
+getPatient(urlPatient, token);
+
+const urlDictionary = `https://mis-api.kreosoft.space/api/dictionary/icd10/roots`;
+getDictionary(urlDictionary)
+
+
+async function formatBirthday(originalDate){
+    const dateParts = originalDate.split("-");
+    console.log(originalDate)
+    const day = dateParts[2];
+    const month = dateParts[1];
+    const year = dateParts[0];
+    originalDate = `${day}.${month}.${year}`;
+    console.log(originalDate);
+    return originalDate
+}
+
+
+function populateDictionary(dictionaries) {
+    const selectDictionary = document.getElementById('selectDictionary');
+    dictionaries.forEach(dictionary => {
+      const option = document.createElement('option');
+      option.value = dictionary.id;
+      option.text = dictionary.name;
+      selectDictionary.appendChild(option);
+    });
+  }

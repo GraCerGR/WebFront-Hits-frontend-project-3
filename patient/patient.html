@@ -48,6 +48,73 @@
           </ul>
         </div>
       </nav>
+
+
+            <div class="container py-2">
+        <div class="row align-items-center py-1">
+          <div class="col">
+            <h1>Пациенты</h1>
+          </div>
+          <div class="col d-flex justify-content-end align-items-center">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registrationModal">Добавить осмотр</button>
+          </div>
+        </div>
+          <div class="row">
+            <div class="col">
+              <h5 data-name=""></h5>
+            </div>
+            <div class="col d-flex justify-content-end">
+              <h6 data-birthday=""></h6>
+            </div>
+          </div>
+
+
+        
+      </div>
+      <div class="container container2 py-2 my-2">
+        <div>
+          <form>
+            <div class="row align-items-end py-1">
+            <div class="col-6">
+              <label for="selectDictionary" class="form-label">МКБ-10</label>
+              <select multiple id="selectDictionary" class="form-select" size="2">
+              </select>
+            </div>
+            <div class="col d-flex justify-content-center">
+              <input class="form-check-input" type="checkbox" role="switch" id="myPatientsSwitch">
+              <label class="form-check-label" for="myPatientsSwitch">Сгруппировать по повторным</label>
+            </div>
+            <div class="col d-flex justify-content-center">
+              <input class="form-check-input" type="checkbox" role="switch" id="myPatientsSwitch">
+              <label class="form-check-label" for="myPatientsSwitch">Показать все</label>
+            </div>
+          </div>
+
+              <div class="row  align-items-end py-1">
+                  <div class="col">
+                    <label for="pageSizeInput" class="form-label">Число пациентов на странице</label>
+                    <input type="text" class="form-control" placeholder="" id="pageSizeInput">
+                  </div>
+                  <div class="col">
+                  </div>
+                  <div class="col d-flex justify-content-end align-items-center">
+                    <div>
+                      <button type="button" class="btn btn-primary" id="searchButton">Поиск</button>
+                    </div>
+                </div>
+              </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="row list">
+      </div>
+
+      <nav aria-label="Пример навигации по страницам">
+        <ul class="pagination" id="pagination">
+        </ul>
+      </nav>
 </div>
 
 </body>
