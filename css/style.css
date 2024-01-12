@@ -189,9 +189,17 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-    background-color: rgb(246, 251, 255);
-    border-radius: 5px;
+    background-color: rgb(247,246,252);
+    /*border-radius: 5px;*/
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.753);
+  }
+
+  .death {
+    background-color: rgb(254,239,232);
+  }
+
+  .container2.shifted {
+    margin-left: 20px;
   }
 
   

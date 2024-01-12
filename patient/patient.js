@@ -22,7 +22,7 @@ async function getPatient(url, token) {
     .then(async data => {
         console.log(data)
         document.querySelector('[data-name]').textContent = data.name;
-        document.querySelector('[data-birthday]').textContent =  `Дата рождения: ${await formatBirthday(data.birthday.split('T')[0])}`;
+        document.querySelector('[data-birthday]').textContent = `Дата рождения: ${data.birthday ? await formatBirthday(data.birthday.split('T')[0]) : 'Не указано'}`;
 
         const urlInspection = `https://mis-api.kreosoft.space/api/patient/${data.id}/inspections?grouped=false&page=1&size=5`;
         getInspection(urlInspection, token)
@@ -59,7 +59,7 @@ async function getDictionary(url) {
     .then(data => {
       console.log(url);
       console.log(data);
-    createCard(data);
+    createCard(data.inspections);
 
     maxPagination = data.pagination.count;
     updatePagination(maxPagination);
@@ -69,6 +69,27 @@ async function getDictionary(url) {
     });
   }
 
+  function getChain(id, token) {
+    console.log(id);
+    const url = `https://mis-api.kreosoft.space/api/inspection/${id}/chain`;
+    console.log(url);
+    return fetch(url, {
+      method: 'GET',
+      headers: new Headers({
+        "Authorization": `Bearer ${token}`
+      }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(url);
+      console.log(data);
+    createCard(data, id);
+    })
+    .catch(error => {
+      console.error('Ошибка', error);
+    });
+    
+  }
 
 
 let queryString = window.location.search;
@@ -104,33 +125,81 @@ function populateDictionary(dictionaries) {
   }
 
 
-  function createCard(data) {
-    const cardContainerWrapper = document.querySelector('.row.list');
-    data.inspections.forEach(async patient => {
-
+  function createCard(data, id) {
+    let cardContainerWrapper;
+    if (id){
+      cardContainerWrapper = document.getElementById(`collapse-${id}`);
+    } else{
+      cardContainerWrapper = document.querySelector('.row.list');
+    }
+    let marginLeft = 20;
+    data.forEach(async inspection => {
+      let arrow = '';
       const cardContainer = document.createElement('div');
-      cardContainer.classList.add('col-lg-6');
-      
       const container2 = document.createElement('div');
-      container2.classList.add('container2', 'container', 'p-2', 'my-2');
-      const queryString = new URLSearchParams(patient.id).toString();
-      const url = `/patient/patient.html?${queryString}`;
-      container2.innerHTML = `
-          <div class="background">
-          ${await formatBirthday(patient.date.split('T')[0])}
-          </div>
-          <strong>Амбулаторный осмотр</strong>
-          <div>Заключение: <strong>${patient.conclusion}</strong></div>
-          <div>Основной диагноз: <strong>${patient.diagnosis.name}</strong></div>
-          <div class="fw-light">Медицинский работник: ${patient.doctor}</div>
+      container2.classList.add('p-2', 'my-2');
+      if (!id){
+        container2.classList.add('container2');
+        cardContainer.classList.add('col-lg-6');
+      } else{
+        cardContainer.classList.add('col-lg');
+      }
+      const conclusionText =
+        inspection.conclusion === 'Recovery'
+          ? 'Выздоровление'
+          : inspection.conclusion === 'Disease'
+          ? 'Болезнь'
+          : inspection.conclusion === 'Death'
+          ? 'Смерть'
+          : 'Не указан';
+      if (inspection.conclusion === 'Death')
+        container2.classList.add('death');
+      if (document.getElementById('grupSwitch').checked) {
+        if (inspection.hasChain == true) {
+          arrow = `<button type="button" class="btn btn-light" data-bs-toggle="collapse" data-bs-target="#collapse-${inspection.id}")">▼</button>`;
+          getChain(inspection.id,token)
+          console.log(inspection.id);
+        }
+        console.log(inspection.hasNested, inspection.hasChain);
+        if ((inspection.hasNested == true && inspection.hasChain == false)) {
+          arrow = `<button type="button" class="btn btn-light" data-bs-toggle="collapse" data-bs-target="#collapse-${inspection.id}")">▼</button>`;
+          container2.classList.add('shifted');
+          container2.style.marginLeft = `${marginLeft}px`;
+          marginLeft += 20;
+          if (marginLeft > 40) {
+            marginLeft = 40;
+          }
+        }
 
-      `;
-      
+        if ((inspection.hasNested == false && inspection.hasChain == false && inspection.previousId)) {
+          arrow = `<button type="button" class="btn btn-light disabled"">■</button>`;
+          container2.classList.add('shifted');
+          container2.style.marginLeft = `${marginLeft}px`;
+          marginLeft += 20;
+          if (marginLeft > 40) {
+            marginLeft = 40;
+          }
+        }
+      }
+
+      container2.innerHTML = `
+      ${arrow}
+      <div class="background">
+        ${await formatBirthday(inspection.date.split('T')[0])}
+      </div>
+      <strong>Амбулаторный осмотр</strong>
+      <div>Заключение: <strong>${conclusionText}</strong></div>
+      <div>Основной диагноз: <strong>${inspection.diagnosis.name}</strong></div>
+      <div class="fw-light">Медицинский работник: ${inspection.doctor}</div>
+      <div id="collapse-${inspection.id}" class="collapse">
+      </div>
+    `;
+
       cardContainer.appendChild(container2);
       cardContainerWrapper.appendChild(cardContainer);
-   //   cardContainer.addEventListener('click', () => {
-   //     window.location.href = url;
-   //   });
+      //   cardContainer.addEventListener('click', () => {
+      //     window.location.href = url;
+      //   });
     });
   }
 
