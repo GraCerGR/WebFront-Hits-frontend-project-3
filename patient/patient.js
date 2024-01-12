@@ -135,6 +135,7 @@ function populateDictionary(dictionaries) {
     let marginLeft = 20;
     data.forEach(async inspection => {
       let arrow = '';
+      let add = '';
       const cardContainer = document.createElement('div');
       const container2 = document.createElement('div');
       container2.classList.add('p-2', 'my-2');
@@ -181,25 +182,32 @@ function populateDictionary(dictionaries) {
           }
         }
       }
+      if ((inspection.hasNested == false && inspection.hasChain == false)){
+        add = `<a href="#" class="btn add-inspection-link btn-outline-primary btn-sm my-1">📝 Добавить осмотр</a>`;
+      }
 
       container2.innerHTML = `
-      ${arrow}
-      <div class="background">
-        ${await formatBirthday(inspection.date.split('T')[0])}
+      <div class="row">
+      <div class="col-md-6">
+        ${arrow}
+        <div class="background">
+          ${await formatBirthday(inspection.date.split('T')[0])}
+        </div>
+        <strong>Амбулаторный осмотр</strong>
       </div>
-      <strong>Амбулаторный осмотр</strong>
-      <div>Заключение: <strong>${conclusionText}</strong></div>
-      <div>Основной диагноз: <strong>${inspection.diagnosis.name}</strong></div>
-      <div class="fw-light">Медицинский работник: ${inspection.doctor}</div>
-      <div id="collapse-${inspection.id}" class="collapse">
+      <div class="col-md-6 d-flex justify-content-end align-items-center">
+        ${add}
+        <a href="#" class="btn add-inspection-link btn-outline-primary btn-sm">🔍 Детали осмотра</a>
       </div>
+    </div>
+    <div>Заключение: <strong>${conclusionText}</strong></div>
+    <div>Основной диагноз: <strong>${inspection.diagnosis.name}</strong></div>
+    <div class="fw-light">Медицинский работник: ${inspection.doctor}</div>
+    <div id="collapse-${inspection.id}" class="collapse"></div>
     `;
 
       cardContainer.appendChild(container2);
       cardContainerWrapper.appendChild(cardContainer);
-      //   cardContainer.addEventListener('click', () => {
-      //     window.location.href = url;
-      //   });
     });
   }
 
