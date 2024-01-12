@@ -23,7 +23,7 @@ async function getPatient(url, token) {
         console.log(data)
         document.querySelector('[data-name]').textContent = data.name;
         document.querySelector('[data-birthday]').textContent = `Дата рождения: ${data.birthday ? await formatBirthday(data.birthday.split('T')[0]) : 'Не указано'}`;
-
+        document.querySelector('[data-gender]').textContent = data.gender === 'Male'? '♂' : data.gender === 'Female'? '♀' : '';
         const urlInspection = `https://mis-api.kreosoft.space/api/patient/${data.id}/inspections?grouped=false&page=1&size=5`;
         getInspection(urlInspection, token)
     })
@@ -183,19 +183,20 @@ function populateDictionary(dictionaries) {
         }
       }
       if ((inspection.hasNested == false && inspection.hasChain == false)){
-        add = `<a href="#" class="btn add-inspection-link btn-outline-primary btn-sm my-1">📝 Добавить осмотр</a>`;
+        add = `<a href="../inspection/inspection.html?previousInspectionId=${inspection.id}&repeat=true" class="btn add-inspection-link btn-outline-primary btn-sm my-1">📝 Добавить осмотр</a>`;
+        
       }
 
       container2.innerHTML = `
       <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-7">
         ${arrow}
         <div class="background">
           ${await formatBirthday(inspection.date.split('T')[0])}
         </div>
         <strong>Амбулаторный осмотр</strong>
       </div>
-      <div class="col-md-6 d-flex justify-content-end align-items-center">
+      <div class="col-md-5 d-flex justify-content-end align-items-center">
         ${add}
         <a href="#" class="btn add-inspection-link btn-outline-primary btn-sm">🔍 Детали осмотра</a>
       </div>
