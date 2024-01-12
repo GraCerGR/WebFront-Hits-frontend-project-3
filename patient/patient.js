@@ -143,6 +143,7 @@ function populateDictionary(dictionaries) {
         container2.classList.add('container2');
         cardContainer.classList.add('col-lg-6');
       } else{
+        container2.classList.add('container3');
         cardContainer.classList.add('col-lg');
       }
       const conclusionText =
