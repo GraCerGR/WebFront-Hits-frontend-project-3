@@ -14,6 +14,8 @@ if (repeat === 'true') {
     console.log(repeat);
 }
 
+console.log(previousInspectionId)
+
 const checkedRadioSwitch = document.getElementById('checkedRadioSwitch');
 const selectContainer = document.getElementById('selectContainer');
 
@@ -67,6 +69,9 @@ getPreviousInspections(urlPreviousInspections, token)
 //const urlDiagnosis = `https://mis-api.kreosoft.space/api/dictionary/icd10?page=1&size=5`;
 //getDiagnosis(urlDiagnosis);
 
+const urlPreviousInspection = `https://mis-api.kreosoft.space/api/inspection/${previousInspectionId}`;
+getPreviousInspection(urlPreviousInspection, token);
+
 const urlPatient = `https://mis-api.kreosoft.space/api/patient/${patient}`;
 getPatient(urlPatient, token);
 
@@ -89,6 +94,28 @@ async function getPatient(url, token) {
             console.error('Ошибка', error);
         });
 }
+
+
+async function getPreviousInspection(url, token) {
+    return fetch(url, {
+        method: 'GET',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`
+        }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(url);
+            console.log(data);
+            const previousInspectionDate = formatDataTime(data.date);
+            const selectPreviousInspections = document.getElementById('selectPreviousInspections');
+            selectPreviousInspections.value = previousInspectionDate;
+        })
+        .catch(error => {
+            console.error('Ошибка', error);
+        });
+}
+
 
 async function getPreviousInspections(url, token) {
     return fetch(url, {
@@ -153,7 +180,7 @@ function populateInspections(inspections) {
     const selectInspections = document.getElementById('request');
     inspections.forEach(inspection => {
         const option = document.createElement('option');
-        option.value = formatBirthday(inspection.date);
+        option.value = formatDataTime(inspection.date);
         option.text = inspection.diagnosis.code;
         selectInspections.appendChild(option);
     });
@@ -176,6 +203,18 @@ function formatBirthday(originalDate) {
     const month = dateParts[1];
     const year = dateParts[0];
     const formattedDate = `${day}.${month}.${year}`;
+    return formattedDate;
+}
+
+function formatDataTime(originalDate) {
+    const dateParts = originalDate.split("T")[0].split("-");
+    const timeParts = originalDate.split("T")[1].split(":");
+    const day = dateParts[2];
+    const month = dateParts[1];
+    const year = dateParts[0];
+    const hours = timeParts[0];
+    const minutes = timeParts[1];
+    const formattedDate = `${day}.${month}.${year} ${hours}:${minutes}`;
     return formattedDate;
 }
 
@@ -286,6 +325,22 @@ document.getElementById('addDiagnosBtn').addEventListener('click', function () {
     });
 });
 
+// -----------------------Заключения
+function handleConclusionChange() {
+    const conclusionSelect = document.getElementById('conclusionSelect');
+    const diseaseDateField = document.getElementById('diseaseDateField');
+    const deathDateField = document.getElementById('deathDateField');
 
+    if (conclusionSelect.value === 'disease') {
+        diseaseDateField.style.display = 'block';
+        deathDateField.style.display = 'none';
+    } else if (conclusionSelect.value === 'death') {
+        diseaseDateField.style.display = 'none';
+        deathDateField.style.display = 'block';
+    } else {
+        diseaseDateField.style.display = 'none';
+        deathDateField.style.display = 'none';
+    }
+}
 
 
