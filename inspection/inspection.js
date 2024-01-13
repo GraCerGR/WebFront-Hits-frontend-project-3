@@ -6,5 +6,6 @@ const params = new URLSearchParams(url.search);
 
 // Get the values of the parameters
 const previousInspectionId = params.get('previousInspectionId');
+const patient = params.get('patient');
 const repeat = params.get('repeat');
-console.log(previousInspectionId, repeat);
+console.log(patient, previousInspectionId, repeat);

@@ -95,6 +95,7 @@ async function getDictionary(url) {
 let queryString = window.location.search;
 queryString = queryString.slice(1,-1);
 const urlPatient = `https://mis-api.kreosoft.space/api/patient/${queryString}`;
+document.getElementById("myLink").href = "../inspection/inspection.html?repeat=false&patient=" + queryString;
 console.log(urlPatient);
 getPatient(urlPatient, token);
 
@@ -184,7 +185,7 @@ function populateDictionary(dictionaries) {
         }
       }
       if ((inspection.hasNested == false && inspection.hasChain == false)){
-        add = `<a href="../inspection/inspection.html?previousInspectionId=${inspection.id}&repeat=true" class="btn add-inspection-link btn-outline-primary btn-sm my-1">📝 Добавить осмотр</a>`;
+        add = `<a href="../inspection/inspection.html?previousInspectionId=${inspection.id}&repeat=true&patient=${queryString}" class="btn add-inspection-link btn-outline-primary btn-sm my-1">📝 Добавить осмотр</a>`;
         
       }
 
