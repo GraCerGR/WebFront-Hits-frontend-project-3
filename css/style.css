@@ -217,6 +217,10 @@
   /*border-radius: 5px;*/
 }
 
+.blue{
+  color:rgb(66,133,180);
+}
+
 
 #pagination span {
   margin-right: 5px;
