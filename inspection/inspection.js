@@ -1,9 +1,6 @@
-// Get the current URL
 const url = new URL(window.location.href);
 console.log(url);
-// Get the query parameters from the URL
 const params = new URLSearchParams(url.search);
-
 var token = localStorage.getItem('token');
 
 // Get the values of the parameters
@@ -35,6 +32,7 @@ checkedRadioSwitch.addEventListener('change', function () {
     }
 });
 
+let diagnosCount = 1;
 let commentCount = 1;
 const checkConsultation = document.getElementById('checkConsultation');
 const selectSpecialties = document.getElementById('selectSpecialties1');
@@ -53,17 +51,23 @@ checkConsultation.addEventListener('change', function () {
 
         const consultations = document.querySelectorAll('[id^="consultation"]');
         for (let i = 2; i < consultations.length; i++) {
-          consultations[i].remove();
+            consultations[i].remove();
         }
         commentCount = 1;
     }
 });
 
 
-console.log(patient, previousInspectionId, repeat);
+const urlSpecialities = `https://mis-api.kreosoft.space/api/dictionary/speciality?size=30`;
+getSpecialities(urlSpecialities, commentCount);
+
+const urlPreviousInspections = `https://mis-api.kreosoft.space/api/patient/${patient}/inspections/search`;
+getPreviousInspections(urlPreviousInspections, token)
+
+//const urlDiagnosis = `https://mis-api.kreosoft.space/api/dictionary/icd10?page=1&size=5`;
+//getDiagnosis(urlDiagnosis);
 
 const urlPatient = `https://mis-api.kreosoft.space/api/patient/${patient}`;
-console.log(urlPatient);
 getPatient(urlPatient, token);
 
 
@@ -120,12 +124,30 @@ async function getSpecialities(url, i) {
         });
 }
 
-const urlSpecialities = `https://mis-api.kreosoft.space/api/dictionary/speciality?size=30`;
-getSpecialities(urlSpecialities, commentCount);
 
 
-const urlPreviousInspections = `https://mis-api.kreosoft.space/api/patient/${patient}/inspections/search`;
-getPreviousInspections(urlPreviousInspections, token)
+async function getDiagnosis(url, i) {
+    return fetch(url, {
+        method: 'GET',
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(url);
+            console.log(data);
+            const datalistElement = document.getElementById(`diagnoses${i}`);
+            datalistElement.innerHTML = '';
+            data.records.forEach((diagnosis) => {
+                const optionElement = document.createElement('option');
+                optionElement.value = diagnosis.code;
+                optionElement.text = diagnosis.name;
+                datalistElement.appendChild(optionElement);
+            });
+        })
+        .catch(error => {
+            console.error('Ошибка', error);
+        });
+}
+
 
 function populateInspections(inspections) {
     const selectInspections = document.getElementById('request');
@@ -148,7 +170,6 @@ function populateSpecialties(specialties, i) {
     });
 }
 
-
 function formatBirthday(originalDate) {
     const dateParts = originalDate.split("T")[0].split("-");
     const day = dateParts[2];
@@ -159,7 +180,9 @@ function formatBirthday(originalDate) {
 }
 
 
-document.getElementById('addConsultationBtn').addEventListener('click', function() {
+//------------------------Consultation--------------------
+
+document.getElementById('addConsultationBtn').addEventListener('click', function () {
     commentCount++;
     const consultationId = 'consultation' + commentCount;
     const newConsultation = document.createElement('div');
@@ -182,14 +205,87 @@ document.getElementById('addConsultationBtn').addEventListener('click', function
     getSpecialities(urlSpecialities, commentCount);
     const consultationContainer = document.getElementById('consultation1');
     consultationContainer.parentNode.insertBefore(newConsultation, consultationContainer.nextSibling);
-  });
-  
-  document.addEventListener('click', function(event) {
+});
+
+document.addEventListener('click', function (event) {
     if (event.target.classList.contains('delete-consultation-btn')) {
-      const consultationId = event.target.dataset.consultationId;
-      const consultationElement = document.getElementById(consultationId);
-      if (consultationElement) {
-        consultationElement.remove();
-      }
+        const consultationId = event.target.dataset.consultationId;
+        const consultationElement = document.getElementById(consultationId);
+        if (consultationElement) {
+            consultationElement.remove();
+        }
+    } else if (event.target.classList.contains('delete-diagnos-btn')) {
+        const diagnosId = event.target.dataset.diagnosId;
+        const diagnosElement = document.getElementById(diagnosId);
+        if (diagnosElement) {
+            diagnosElement.remove();
+        }
     }
-  });
+});
+
+//------------------------Diagnosies--------------------
+const inputElement1 = document.getElementById('selectDiagnoses1');
+inputElement1.addEventListener('input', function () {
+    const input = event.target.value;
+    const url = `https://mis-api.kreosoft.space/api/dictionary/icd10?request=${input}&page=1&size=5`;
+    getDiagnosis(url, 1);
+});
+
+
+document.getElementById('addDiagnosBtn').addEventListener('click', function () {
+    diagnosCount++;
+    const diagnosId = 'diagnos' + diagnosCount;
+    const newDiagnos = document.createElement('div');
+    newDiagnos.id = diagnosId;
+    newDiagnos.innerHTML = `
+        <div class="d-flex align-items-center">
+            <div class="col">
+                <label class="form-label fw-light py-1">Болезни</label>
+                <input type="text" class="form-control" placeholder="" id="selectDiagnoses${diagnosCount}" list="diagnoses${diagnosCount}">
+                <datalist id="diagnoses${diagnosCount}">
+                </datalist>
+            </div>
+        </div>
+        <div id="${diagnosId}DiagnosComment">
+            <textarea class="form-control my-2" rows="1"></textarea>
+        </div>
+        <label class="form-label fw-light py-1">Тип диагноза в осмотре</label>
+        <div class="form-group">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="Radios${diagnosCount}" id="Main${diagnosCount}" value="Main">
+            <label class="form-check-label">
+              Основной
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="Radios${diagnosCount}" id="Concomitant${diagnosCount}" value="Concomitant" checked>
+            <label class="form-check-label">
+              Сопутствующий
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="Radios${diagnosCount}" id="Complication${diagnosCount}" value="Complication">
+            <label class="form-check-label">
+              Осложнение
+            </label>
+          </div>
+        </div>
+        <p id="diagnos1"></p>
+        <div class="col my-2" id="addDiagnos">
+            <button class="btn btn-danger delete-diagnos-btn my-1" data-diagnos-id="${diagnosId}">- Удалить диагноз</button>
+        </div>
+    `;
+    const diagnosContainer = document.getElementById('diagnos1');
+    diagnosContainer.parentNode.insertBefore(newDiagnos, diagnosContainer.nextSibling);
+
+    const inputElement = document.getElementById(`selectDiagnoses${diagnosCount}`);
+    inputElement.addEventListener('input', function () {
+        const input = event.target.value;
+        const url = `https://mis-api.kreosoft.space/api/dictionary/icd10?request=${input}&page=1&size=5`;
+        getDiagnosis(url, diagnosCount);
+    });
+});
+
+
+
+

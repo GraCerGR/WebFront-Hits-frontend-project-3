@@ -89,15 +89,15 @@
       </div>
       <div class="col-md-3 py-2">
         <div id="selectContainer" style="display: none;">
-          <label class="fw-light" for="selectField">Выберите опцию:</label>
+          <label class="fw-light" for="selectField">Предыдущий осмотр</label>
           <input type="text" class="form-control" placeholder="" id="selectPreviousInspections" list="request">
           <datalist id="request">
         </div>
       </div>
 
       <div class="col-md-3 py-2">
-        <label class="fw-light" for="inputData" class="form-label">Дата осмотра</label>
-        <input type="date" class="form-control" id="inputData">
+        <label class="fw-light" for="inputData" class="form-label">Дата и время осмотра</label>
+        <input type="datetime-local" class="form-control" id="inputData">
       </div>
     </div>
 
@@ -118,26 +118,69 @@
     <div class="container container2 py-2 my-2">
       <label for="exampleFormControlTextarea1" class="form-label py-1 fw-bold blue">Консультация</label>
       <p>
-        <div class="d-flex align-items-center">
-          <div class="form-check form-switch col">
-            <input class="form-check-input" type="checkbox" role="switch" id="checkConsultation">
-            <label class="form-check-label" for="checkConsultation">Требуется консультация</label>
-          </div>
-          <div class="col">
-            <select class="form-select" id="selectSpecialties1" style="display: none;" required>
-            </select>
-          </div>
+      <div class="d-flex align-items-center">
+        <div class="form-check form-switch col">
+          <input class="form-check-input" type="checkbox" role="switch" id="checkConsultation">
+          <label class="form-check-label" for="checkConsultation">Требуется консультация</label>
         </div>
-        <div id="consultationComment" style="display: none;">
-          <label class="form-label fw-light py-1">Комментарий</label>
-          <textarea class="form-control" rows="3"></textarea>
+        <div class="col">
+          <select class="form-select" id="selectSpecialties1" style="display: none;" required>
+          </select>
         </div>
+      </div>
+      <div id="consultationComment" style="display: none;">
+        <label class="form-label fw-light py-1">Комментарий</label>
+        <textarea class="form-control" rows="3"></textarea>
+      </div>
       </p>
       <p id="consultation1"></p>
       <div class="col my-2" style="display: none;" id="addConsultation">
         <button id="addConsultationBtn" type="button" class="btn btn-primary">+ Добавить консультацию</button>
       </div>
     </div>
+
+    <div class="container container2 py-2 my-2">
+      <label for="exampleFormControlTextarea1" class="form-label py-1 fw-bold blue">Диагнозы</label>
+      <div class="d-flex align-items-center">
+        <div class="col">
+          <label class="form-label fw-light py-1">Болезни</label>
+          <input type="text" class="form-control" placeholder="" id="selectDiagnoses1" list="diagnoses1">
+          <datalist id="diagnoses1">
+        </div>
+      </div>
+      <div id="1DiagnosComment">
+        <textarea class="form-control my-2" rows="1"></textarea>
+      </div>
+      <label class="form-label fw-light py-1">Тип диагноза в осмотре</label>
+      <div class="form-group">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="Radios1" id="Main1" value="Main" checked>
+          <label class="form-check-label" for="exampleRadios1">
+            Основной
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="Radios1" id="Concomitant1" value="Concomitant">
+          <label class="form-check-label" for="exampleRadios2">
+            Сопутствующий
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="Radios1" id="Complication1" value="Complication">
+          <label class="form-check-label" for="exampleRadios2">
+            Осложнение
+          </label>
+        </div>
+      </div>
+
+      <p id="diagnos1"></p>
+      <div class="col my-2" id="addDiagnos">
+        <button id="addDiagnosBtn" type="button" class="btn btn-primary">+ Добавить диагноз</button>
+      </div>
+    </div>
+
+
+
   </div>
 
 
