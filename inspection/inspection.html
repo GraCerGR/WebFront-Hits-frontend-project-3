@@ -90,8 +90,7 @@
       <div class="col-md-3 py-2">
         <div id="selectContainer" style="display: none;">
           <label class="fw-light" for="selectField">Предыдущий осмотр</label>
-          <input type="text" class="form-control" placeholder="" id="selectPreviousInspections" list="request">
-          <datalist id="request">
+          <select type="text" class="form-control" placeholder="" id="selectPreviousInspections"></select>
         </div>
       </div>
 
@@ -103,15 +102,15 @@
 
     <div class="container container2 py-2 my-2">
       <div class="mb-3">
-        <label for="exampleFormControlTextarea1" class="form-label py-1 fw-bold blue">Жалобы</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <label for="complaints" class="form-label py-1 fw-bold blue">Жалобы</label>
+        <textarea class="form-control" id="complaints" rows="3"></textarea>
       </div>
     </div>
 
     <div class="container container2 py-2 my-2">
       <div class="mb-3">
-        <label for="exampleFormControlTextarea1" class="form-label py-1 fw-bold blue">Анамнез заболевания</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <label for="anamnesis" class="form-label py-1 fw-bold blue">Анамнез заболевания</label>
+        <textarea class="form-control" id="anamnesis" rows="3"></textarea>
       </div>
     </div>
 
@@ -128,7 +127,7 @@
           </select>
         </div>
       </div>
-      <div id="consultationComment" style="display: none;">
+      <div id="1ConsultationComment" style="display: none;">
         <label class="form-label fw-light py-1">Комментарий</label>
         <textarea class="form-control" rows="3"></textarea>
       </div>
@@ -181,8 +180,8 @@
 
     <div class="container container2 py-2 my-2">
       <div class="mb-3">
-        <label for="exampleFormControlTextarea1" class="form-label py-1 fw-bold blue">Рекомендации по лечению</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <label for="treatment" class="form-label py-1 fw-bold blue">Рекомендации по лечению</label>
+        <textarea class="form-control" id="treatment" rows="3"></textarea>
       </div>
     </div>
 
@@ -192,31 +191,31 @@
         <div class="col-md-6 mb-3">
           <label for="conclusionSelect" class="form-label fw-light py-1">Заключение</label>
           <select class="form-select" id="conclusionSelect" onchange="handleConclusionChange()">
-            <option value="recovery">Выздоровление</option>
-            <option value="disease">Болезнь</option>
-            <option value="death">Смерть</option>
+            <option value="Recovery">Выздоровление</option>
+            <option value="Disease">Болезнь</option>
+            <option value="Death">Смерть</option>
           </select>
         </div>
         <div id="diseaseDateField" style="display: none;" class="col-md-6 mb-3">
           <label for="diseaseDate" class="form-label fw-light py-1">Дата следующего визита</label>
-          <input type="datetime-local" class="form-control" id="diseaseDate">
+          <input type="datetime-local" class="form-control" id="diseaseDate" required>
         </div>
         <div id="deathDateField" style="display: none;" class="col-md-6 mb-3">
           <label for="deathDate" class="form-label fw-light py-1">Дата и время смерти</label>
-          <input type="datetime-local" class="form-control" id="deathDate">
+          <input type="datetime-local" class="form-control" id="deathDate" required>
         </div>
       </div>
     </div>
-    </div>
+  </div>
 
-    <div class="container py-2 my-2">
-      <div class="row">
-        <div class="col d-flex justify-content-center">
-          <button id="saveInspectionBtn" type="button" class="btn btn-primary mx-1">Сохранить осмотр</button>
-          <button id="cancelBtn" type="button" class="btn btn-secondary mx-1">Отмена</button>
-        </div>
+  <div class="container py-2 my-2">
+    <div class="row">
+      <div class="col d-flex justify-content-center">
+        <button id="saveInspectionBtn" type="button" class="btn btn-primary mx-1">Сохранить осмотр</button>
+        <button id="cancelBtn" type="button" class="btn btn-secondary mx-1">Отмена</button>
       </div>
-
+    </div>
+    <div id="errorMessage" class="text-danger text-center"></div>
   </div>
 
 

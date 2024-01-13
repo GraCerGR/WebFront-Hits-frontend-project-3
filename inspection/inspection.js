@@ -36,9 +36,12 @@ checkedRadioSwitch.addEventListener('change', function () {
 
 let diagnosCount = 1;
 let commentCount = 1;
+let numberOfObjects1 = 0;
+let numberOfObjects2 = 0;
+let id = null;
 const checkConsultation = document.getElementById('checkConsultation');
 const selectSpecialties = document.getElementById('selectSpecialties1');
-const consultationComment = document.getElementById('consultationComment');
+const consultationComment = document.getElementById('1ConsultationComment');
 const addConsultation = document.getElementById('addConsultation');
 
 checkConsultation.addEventListener('change', function () {
@@ -65,12 +68,30 @@ getSpecialities(urlSpecialities, commentCount);
 
 const urlPreviousInspections = `https://mis-api.kreosoft.space/api/patient/${patient}/inspections/search`;
 getPreviousInspections(urlPreviousInspections, token)
+    .then(() => {
+        getPreviousInspection1();
+    })
+    .catch(error => {
+        console.error('Ошибка', error);
+    });
 
 //const urlDiagnosis = `https://mis-api.kreosoft.space/api/dictionary/icd10?page=1&size=5`;
 //getDiagnosis(urlDiagnosis);
 
 const urlPreviousInspection = `https://mis-api.kreosoft.space/api/inspection/${previousInspectionId}`;
 getPreviousInspection(urlPreviousInspection, token);
+
+function getPreviousInspection1(){
+const optionToSelect = document.getElementById('selectPreviousInspections');//.querySelector(`option[value="${previousInspectionId}"]`);
+console.log(optionToSelect);
+console.log(previousInspectionId);
+console.log(optionToSelect.querySelector(`option[value="${previousInspectionId}"]`));
+const selectedOption = optionToSelect.querySelector(`option[value="${previousInspectionId}"]`);
+if (optionToSelect) {
+    optionToSelect.selectedIndex = selectedOption.index;
+  console.log(optionToSelect.selected);
+}}
+
 
 const urlPatient = `https://mis-api.kreosoft.space/api/patient/${patient}`;
 getPatient(urlPatient, token);
@@ -109,7 +130,8 @@ async function getPreviousInspection(url, token) {
             console.log(data);
             const previousInspectionDate = formatDataTime(data.date);
             const selectPreviousInspections = document.getElementById('selectPreviousInspections');
-            selectPreviousInspections.value = previousInspectionDate;
+            selectPreviousInspections.name = data.diagnoses.id;
+            id = data.id;
         })
         .catch(error => {
             console.error('Ошибка', error);
@@ -117,7 +139,7 @@ async function getPreviousInspection(url, token) {
 }
 
 
-async function getPreviousInspections(url, token) {
+function getPreviousInspections(url, token) {
     return fetch(url, {
         method: 'GET',
         headers: new Headers({
@@ -176,13 +198,60 @@ async function getDiagnosis(url, i) {
 }
 
 
+async function post(url, data, token) {
+    return fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(result => {
+        const errorMessage = document.getElementById('errorMessage');
+          console.log(result);
+
+          if (result.message) {
+            errorMessage.textContent = result.message;
+            console.log(result.message);
+          }
+          if (result.title) {
+            errorMessage.textContent = result.title;
+            console.log(result.title);
+          }
+        })
+      .catch(error => {
+        console.error('Ошибка', error);
+        const errorMessage = document.getElementById('errorMessage');
+        errorMessage.textContent = 'Произошла ошибка при регистрации. Пожалуйста, попробуйте еще раз.';
+        });
+  }
+
+  async function getIdFromICD10(request) {
+    const url = `https://mis-api.kreosoft.space/api/dictionary/icd10?request=${request}&page=1&size=5`;
+  
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      const id = data.records[0].id;
+      return id;
+    } catch (error) {
+      console.error('Error:', error);
+      return null;
+    }
+  }
+
+
+
 function populateInspections(inspections) {
-    const selectInspections = document.getElementById('request');
+    const selectInspections = document.getElementById('selectPreviousInspections');
     inspections.forEach(inspection => {
         const option = document.createElement('option');
-        option.value = formatDataTime(inspection.date);
-        option.text = inspection.diagnosis.code;
+        option.value = inspection.id;
+        option.text = inspection.diagnosis.code + ' ' + formatDataTime(inspection.date);
         selectInspections.appendChild(option);
+        console.log(inspections);
     });
 }
 
@@ -223,7 +292,7 @@ function formatDataTime(originalDate) {
 
 document.getElementById('addConsultationBtn').addEventListener('click', function () {
     commentCount++;
-    const consultationId = 'consultation' + commentCount;
+    const consultationId = commentCount;
     const newConsultation = document.createElement('div');
     newConsultation.id = consultationId;
     newConsultation.innerHTML = `
@@ -235,7 +304,7 @@ document.getElementById('addConsultationBtn').addEventListener('click', function
           </select>
         </div>
       </div>
-      <div id="${consultationId}Comment">
+      <div id="${consultationId}ConsultationComment">
         <label class="form-label fw-light py-1">Комментарий</label>
         <textarea class="form-control" rows="3"></textarea>
       </div>
@@ -244,6 +313,8 @@ document.getElementById('addConsultationBtn').addEventListener('click', function
     getSpecialities(urlSpecialities, commentCount);
     const consultationContainer = document.getElementById('consultation1');
     consultationContainer.parentNode.insertBefore(newConsultation, consultationContainer.nextSibling);
+
+    numberOfObjects1 = document.querySelectorAll('.delete-consultation-btn').length;
 });
 
 document.addEventListener('click', function (event) {
@@ -273,7 +344,7 @@ inputElement1.addEventListener('input', function () {
 
 document.getElementById('addDiagnosBtn').addEventListener('click', function () {
     diagnosCount++;
-    const diagnosId = 'diagnos' + diagnosCount;
+    const diagnosId = diagnosCount;
     const newDiagnos = document.createElement('div');
     newDiagnos.id = diagnosId;
     newDiagnos.innerHTML = `
@@ -323,6 +394,8 @@ document.getElementById('addDiagnosBtn').addEventListener('click', function () {
         const url = `https://mis-api.kreosoft.space/api/dictionary/icd10?request=${input}&page=1&size=5`;
         getDiagnosis(url, diagnosCount);
     });
+    ;
+    numberOfObjects2 = document.querySelectorAll('.delete-diagnos-btn').length;
 });
 
 // -----------------------Заключения
@@ -330,11 +403,13 @@ function handleConclusionChange() {
     const conclusionSelect = document.getElementById('conclusionSelect');
     const diseaseDateField = document.getElementById('diseaseDateField');
     const deathDateField = document.getElementById('deathDateField');
+    document.getElementById('diseaseDate').value = null;
+    document.getElementById('deathDate').value = null;
 
-    if (conclusionSelect.value === 'disease') {
+    if (conclusionSelect.value === 'Disease') {
         diseaseDateField.style.display = 'block';
         deathDateField.style.display = 'none';
-    } else if (conclusionSelect.value === 'death') {
+    } else if (conclusionSelect.value === 'Death') {
         diseaseDateField.style.display = 'none';
         deathDateField.style.display = 'block';
     } else {
@@ -343,4 +418,77 @@ function handleConclusionChange() {
     }
 }
 
+const saveInspectionBtn = document.getElementById('saveInspectionBtn');
+const cancelBtn = document.getElementById('cancelBtn');
 
+
+saveInspectionBtn.addEventListener('click', function () {
+    InspectionCreate();
+    console.log('Осмотр сохранен');
+});
+
+cancelBtn.addEventListener('click', function () {
+    // Здесь можно добавить логику отмены создания осмотра
+    console.log('Создание осмотра отменено');
+});
+
+
+
+async function InspectionCreate() {
+    let diagnoses = [];
+    console.log(numberOfObjects2);
+    for (let i = 1; i <= numberOfObjects2 + 1; i++) {
+        let icdDiagnosisId = document.getElementById(`selectDiagnoses${i}`).value;
+        let description = document.getElementById(`${i}DiagnosComment`).querySelector('textarea').value;
+        let type = document.querySelector(`input[name="Radios${i}"]:checked`).value;
+
+        let object = {
+            icdDiagnosisId: await getIdFromICD10(icdDiagnosisId),
+            description: description,
+            type: type
+        };
+
+        diagnoses[`${i - 1}`] = object;
+    }
+
+    let consultations = [];
+    for (let i = 1; i <= numberOfObjects1 + 1; i++) {
+        let specialityId = document.getElementById(`selectSpecialties${i}`).value;
+        let commentContent = document.getElementById(`${i}ConsultationComment`).querySelector('textarea').value;
+
+        let comment = {
+            content: commentContent
+        };
+
+        let consultation = {
+            specialityId: specialityId,
+            comment: comment
+        };
+
+        consultations.push(consultation);
+    }
+
+    const inspection = {
+        date: document.getElementById('inputData').value,
+        anamnesis: document.getElementById('anamnesis').value,
+        complaints: document.getElementById('complaints').value,
+        treatment: document.getElementById('treatment').value,
+        conclusion: document.getElementById('conclusionSelect').value,
+        nextVisitDate: document.getElementById('diseaseDate').value !== "" ? document.getElementById('diseaseDate').value : null,
+        deathDate: document.getElementById('deathDate').value !== "" ? document.getElementById('deathDate').value : null,
+        previousInspectionId: id,
+        diagnoses: diagnoses,
+        consultations: consultations,
+    }
+    console.log(inspection);
+
+    const urlPost = `https://mis-api.kreosoft.space/api/patient/${patient}/inspections`
+    post(urlPost, inspection, token);
+}
+
+const selectElement = document.getElementById('selectPreviousInspections');
+selectElement.addEventListener('change', () => {
+  const selectedOption = selectElement.options[selectElement.selectedIndex];
+  id = selectedOption.value;
+  console.log(id);
+});
