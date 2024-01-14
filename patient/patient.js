@@ -1,16 +1,6 @@
 var token = localStorage.getItem('token');
 let page = 1;
 
-async function post(url, data = null) {
-  return fetch(url, {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: new Headers({
-      'Content-Type': 'application/json'
-    })
-  }).then(response => response.json());
-}
-
 async function getPatient(url, token) {
   return fetch(url, {
     method: 'GET',
