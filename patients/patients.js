@@ -88,7 +88,7 @@ function createCard(data) {
   function updatePagination(maxPagination) {
     const pagination = document.getElementById('pagination');
     pagination.innerHTML = '';
-  
+    //errorMessage.textContent = '';
     const currentPage = parseInt(page); // текущая страница
     const totalPages = maxPagination; // общее количество страниц
     let startPage, endPage;

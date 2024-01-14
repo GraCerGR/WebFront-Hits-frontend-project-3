@@ -210,6 +210,7 @@ async function post(url, data, token) {
       .then(response => response.json())
       .then(result => {
         const errorMessage = document.getElementById('errorMessage');
+        errorMessage.textContent = '';
           console.log(result);
 
           if (result.message) {
@@ -428,8 +429,8 @@ saveInspectionBtn.addEventListener('click', function () {
 });
 
 cancelBtn.addEventListener('click', function () {
-    // Здесь можно добавить логику отмены создания осмотра
     console.log('Создание осмотра отменено');
+    window.location.href = `../patient/patient.html?${patient}=`;
 });
 
 
