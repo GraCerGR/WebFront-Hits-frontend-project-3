@@ -69,7 +69,7 @@ async function populateDictionary(dictionaries) {
     for (let i = 0; i < selectOptions.length; i++) {
         icdRoots += selectOptions[i].value;
         if (i !== selectOptions.length - 1) {
-            icdRoots += "&";
+            icdRoots += "&icdRoots=";
         }
         if (!selectOptions.length == 0){
             icdRoot = '&icdRoots=';
