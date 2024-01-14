@@ -200,7 +200,7 @@ function createCard(data, id) {
       </div>
       <div class="col-md-5 d-flex justify-content-end align-items-center">
         ${add}
-        <a href="#" class="btn add-inspection-link btn-outline-primary btn-sm">🔍 Детали осмотра</a>
+        <a href="../details/details.html?inspectionId=${inspection.id}&patient=${queryString}" class="btn add-inspection-link btn-outline-primary btn-sm">🔍 Детали осмотра</a>
       </div>
     </div>
     <div>Заключение: <strong>${conclusionText}</strong></div>
@@ -208,7 +208,6 @@ function createCard(data, id) {
     <div class="fw-light">Медицинский работник: ${inspection.doctor}</div>
     <div id="collapse-${inspection.id}" class="collapse"></div>
     `;
-
     cardContainer.appendChild(container2);
     cardContainerWrapper.appendChild(cardContainer);
   });
