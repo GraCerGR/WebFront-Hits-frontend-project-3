@@ -3,64 +3,64 @@ var token = localStorage.getItem('token');
 
 async function getDictionary(url) {
     return fetch(url, {
-      method: 'GET',
+        method: 'GET',
     })
-      .then(response => response.json())
-      .then(data => {
-        console.log(url);
-        console.log(data);
-        populateDictionary(data);
-      })
-      .catch(error => {
-        console.error('Ошибка', error);
-      });
-  }
+        .then(response => response.json())
+        .then(data => {
+            console.log(url);
+            console.log(data);
+            populateDictionary(data);
+        })
+        .catch(error => {
+            console.error('Ошибка', error);
+        });
+}
 
-  async function get(url, token) {
+async function get(url, token) {
     return fetch(url, {
         method: 'GET',
         headers: new Headers({
             "Authorization": `Bearer ${token}`
         }),
     })
-      .then(response => response.json())
-      .then(data => {
-        console.log(url);
-        console.log(data);
-        showTable(true);
-        const tableBody = document.getElementById("tableBody");
-        tableBody.innerHTML = "";
-        const tableFooter = document.getElementById("tableFooter");
-        tableFooter.innerHTML = "";
-        populateTable(data.records);
-        populateFooter(data.summaryByRoot);
-        const errorMessage = document.getElementById('errorMessage');
-        errorMessage.textContent = '';
-      })
-      .catch(error => {
-        showTable(false);
-        console.error('Ошибка', error);
-        const errorMessage = document.getElementById('errorMessage');
-        errorMessage.textContent = 'Произошла ошибка при создании отчёта.';
-      });
-  }
+        .then(response => response.json())
+        .then(data => {
+            console.log(url);
+            console.log(data);
+            showTable(true);
+            const tableBody = document.getElementById("tableBody");
+            tableBody.innerHTML = "";
+            const tableFooter = document.getElementById("tableFooter");
+            tableFooter.innerHTML = "";
+            populateTable(data.records);
+            populateFooter(data.summaryByRoot);
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = '';
+        })
+        .catch(error => {
+            showTable(false);
+            console.error('Ошибка', error);
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = 'Произошла ошибка при создании отчёта.';
+        });
+}
 
 async function populateDictionary(dictionaries) {
     const selectDictionary = document.getElementById('select-1');
     dictionaries.forEach(dictionary => {
-      var option = document.createElement('option');
-      option.value = dictionary.id;
-      option.text = dictionary.code;
-      selectDictionary.appendChild(option);
-      console.log(option.text);
+        var option = document.createElement('option');
+        option.value = dictionary.id;
+        option.text = dictionary.code;
+        selectDictionary.appendChild(option);
+        console.log(option.text);
     });
-  }
-  
-  const urlDictionary = `https://mis-api.kreosoft.space/api/dictionary/icd10/roots`;
-  getDictionary(urlDictionary);
+}
+
+const urlDictionary = `https://mis-api.kreosoft.space/api/dictionary/icd10/roots`;
+getDictionary(urlDictionary);
 
 
-  document.getElementById("submitButton").addEventListener("click", function() {
+document.getElementById("submitButton").addEventListener("click", function () {
     let icdRoot = '';
     const inputDataStart = document.getElementById("inputDataStart").value;
     const inputDataEnd = document.getElementById("inputDataEnd").value;
@@ -71,7 +71,7 @@ async function populateDictionary(dictionaries) {
         if (i !== selectOptions.length - 1) {
             icdRoots += "&icdRoots=";
         }
-        if (!selectOptions.length == 0){
+        if (!selectOptions.length == 0) {
             icdRoot = '&icdRoots=';
         }
     }
@@ -150,25 +150,25 @@ function showTable(bool) {
 
 //--------------------------Multiselect-------------------------------------
 
-  let multiselect_block = document.querySelectorAll(".multiselect_block");
-  multiselect_block.forEach(parent => {
-      let label = parent.querySelector(".field_multiselect");
-      let select = parent.querySelector(".field_select");
-      let text = label.innerHTML;
-      select.addEventListener("change", function(element) {
-          let selectedOptions = this.selectedOptions;
-          label.innerHTML = "";
-          for (let option of selectedOptions) {
-              let button = document.createElement("button");
-              button.type = "button";
-              button.className = "btn_multiselect";
-              button.textContent = option.text;
-              button.onclick = _ => {
-                  option.selected = false;
-                  button.remove();
-                  if (!select.selectedOptions.length) label.innerHTML = text
-              };
-              label.append(button);
-          }
-      })
-  })
+let multiselect_block = document.querySelectorAll(".multiselect_block");
+multiselect_block.forEach(parent => {
+    let label = parent.querySelector(".field_multiselect");
+    let select = parent.querySelector(".field_select");
+    let text = label.innerHTML;
+    select.addEventListener("change", function (element) {
+        let selectedOptions = this.selectedOptions;
+        label.innerHTML = "";
+        for (let option of selectedOptions) {
+            let button = document.createElement("button");
+            button.type = "button";
+            button.className = "btn_multiselect";
+            button.textContent = option.text;
+            button.onclick = _ => {
+                option.selected = false;
+                button.remove();
+                if (!select.selectedOptions.length) label.innerHTML = text
+            };
+            label.append(button);
+        }
+    })
+})

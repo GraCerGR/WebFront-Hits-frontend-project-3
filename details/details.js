@@ -12,10 +12,9 @@ const patient = params.get('patient');
 
 const urlPatient = `https://mis-api.kreosoft.space/api/inspection/${inspectionId}`;
 console.log(urlPatient);
-getPatient(urlPatient, token);
+getInspecrionInfo(urlPatient, token);
 
-
-async function getPatient(url, token) {
+async function getInspecrionInfo(url, token) {
     return fetch(url, {
         method: 'GET',
         headers: new Headers({
@@ -64,6 +63,41 @@ async function getPatient(url, token) {
         });
 }
 
+async function getIdFromICD10(request) {
+    const url = `https://mis-api.kreosoft.space/api/dictionary/icd10?request=${request}&page=1&size=5`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const id = data.records[0].id;
+        return id;
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+
+async function getDiagnosis(url, i) {
+    return fetch(url, {
+        method: 'GET',
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(url);
+            console.log(data);
+            const datalistElement = document.getElementById(`diagnoses${i}`);
+            datalistElement.innerHTML = '';
+            data.records.forEach((diagnosis) => {
+                const optionElement = document.createElement('option');
+                optionElement.value = diagnosis.code;
+                optionElement.text = diagnosis.name;
+                datalistElement.appendChild(optionElement);
+            });
+        })
+        .catch(error => {
+            console.error('Ошибка', error);
+        });
+}
 
 
 async function formatBirthday(originalDate) {
@@ -89,6 +123,7 @@ function formatDataTime(originalDate) {
     return formattedDate;
 }
 
+//--------------Отрисовка консультаций
 function consultations(data) {
     var consultationsContainer = document.querySelector('[data-consultations]');
 
@@ -117,6 +152,8 @@ function consultations(data) {
         consultationsContainer.appendChild(container);
     }
 }
+
+//--------------Отрисовка диагнозов
 
 function diagnoses(diagnosesData) {
     var diagnosesContainer = document.querySelector('[data-diagnoses]');
@@ -227,6 +264,8 @@ document.getElementById('addDiagnosBtn').addEventListener('click', function () {
     numberOfObjects2 = document.querySelectorAll('.delete-diagnos-btn').length;
 });
 
+//---------------------------------Кнопки удаления диагноза и сохранения изменений
+
 document.addEventListener('click', function (event) {
     if (event.target.classList.contains('delete-diagnos-btn')) {
         const diagnosId = event.target.dataset.diagnosId;
@@ -235,15 +274,15 @@ document.addEventListener('click', function (event) {
             diagnosElement.remove();
         }
     } else if (event.target.classList.contains('class')) {
-        InspectionCreate();
+        InspectionChange();
         const registrationModal = new bootstrap.Modal(document.getElementById('registrationModal'));
         registrationModal.hide();
     }
 });
 
+//-----------------------------Изменение осмотра
 
-
-async function InspectionCreate() {
+async function InspectionChange() {
     let diagnoses = [];
     console.log(numberOfObjects2);
     for (let i = 1; i <= numberOfObjects2 + 1; i++) {
@@ -271,10 +310,10 @@ async function InspectionCreate() {
     }
     console.log(inspection);
 
-    CreatePatientPost(inspection, token);
+    putInspection(inspection, token);
 }
 
-async function CreatePatientPost(data, token) {
+async function putInspection(data, token) {
     const url = `https://mis-api.kreosoft.space/api/inspection/${inspectionId}`;
     console.log(inspectionId);
     return fetch(url, {
@@ -305,7 +344,7 @@ async function CreatePatientPost(data, token) {
                 token = result.token;
                 localStorage.setItem('token', token);
                 window.location.href = '../patients/patients.html';
-              }
+            }
 
             console.log(result);
         })
@@ -315,42 +354,5 @@ async function CreatePatientPost(data, token) {
             //errorMessage.textContent = 'Произошла ошибка при создании пациента. Пожалуйста, попробуйте еще раз.';
             console.error('Ошибка', error);
             window.location.reload(true);
-        });
-}
-
-async function getIdFromICD10(request) {
-    const url = `https://mis-api.kreosoft.space/api/dictionary/icd10?request=${request}&page=1&size=5`;
-  
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      const id = data.records[0].id;
-      return id;
-    } catch (error) {
-      console.error('Error:', error);
-      return null;
-    }
-  }
-
-
-  async function getDiagnosis(url, i) {
-    return fetch(url, {
-        method: 'GET',
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log(url);
-            console.log(data);
-            const datalistElement = document.getElementById(`diagnoses${i}`);
-            datalistElement.innerHTML = '';
-            data.records.forEach((diagnosis) => {
-                const optionElement = document.createElement('option');
-                optionElement.value = diagnosis.code;
-                optionElement.text = diagnosis.name;
-                datalistElement.appendChild(optionElement);
-            });
-        })
-        .catch(error => {
-            console.error('Ошибка', error);
         });
 }

@@ -223,7 +223,6 @@ function searchInspection() {
   const cardContainerWrapper = document.querySelector('.row.list');
   cardContainerWrapper.innerHTML = '';
 
-  // Выполните нужные вам действия с полученной ссылкой
   console.log(url);
   console.log(name);
 
@@ -262,7 +261,7 @@ function updatePagination(maxPagination) {
     }
   }
 
-  // Создаем элементы для номеров страниц и добавляем их в пагинацию
+  // Элементы для номеров страниц
   for (let i = startPage; i <= endPage; i++) {
     const li = document.createElement('li');
     li.classList.add('page-item');
@@ -309,7 +308,6 @@ pagination.addEventListener('click', (event) => {
   }
   console.log(maxPagination);
   if (link.innerText === '«') {
-    //console.log(currentPage);
     page = page - 1; // Получаем предыдущий номер страницы
     console.log(page);
   } else if (link.innerText === '»') {

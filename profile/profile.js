@@ -1,7 +1,7 @@
 var token = localStorage.getItem('token');
 const inputTel = document.getElementById('inputTel');
-  
-inputTel.addEventListener('input', function(e) {
+
+inputTel.addEventListener('input', function (e) {
   let value = e.target.value;
   value = value.replace(/\D/g, ''); // Удаляем все, кроме цифр
 
@@ -27,12 +27,12 @@ inputTel.addEventListener('input', function(e) {
 });
 
 async function get(url, token) {
-    return fetch(url, {
-      method: 'GET',
-      headers: new Headers({
-        "Authorization": `Bearer ${token}`
-      }),
-    })
+  return fetch(url, {
+    method: 'GET',
+    headers: new Headers({
+      "Authorization": `Bearer ${token}`
+    }),
+  })
     .then(response => response.json())
     .then(data => {
       console.log(url);
@@ -48,65 +48,64 @@ async function get(url, token) {
     .catch(error => {
       console.error('Ошибка', error);
     });
-  }
+}
 const url = `https://mis-api.kreosoft.space/api/doctor/profile`;
 get(url, token)
 
 function populateSpecialties(specialties) {
-    const selectSpecialties = document.getElementById('selectSpecialties');
-    specialties.forEach(specialty => {
-      const option = document.createElement('option');
-      option.value = specialty.id;
-      option.text = specialty.name;
-      selectSpecialties.appendChild(option);
-    });
-  }
+  const selectSpecialties = document.getElementById('selectSpecialties');
+  specialties.forEach(specialty => {
+    const option = document.createElement('option');
+    option.value = specialty.id;
+    option.text = specialty.name;
+    selectSpecialties.appendChild(option);
+  });
+}
 
-  
-  // Функция для выполнения POST-запроса
+
 async function changeProfilePut(data, token) {
-    const url = 'https://mis-api.kreosoft.space/api/doctor/profile';
-    return fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify(data)
-    })
+  const url = 'https://mis-api.kreosoft.space/api/doctor/profile';
+  return fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify(data)
+  })
     .then(response => response.json())
     .then(result => {
-        console.log(result);
-        const errorMessage = document.getElementById('errorMessage');
-        errorMessage.textContent = '';
+      console.log(result);
+      const errorMessage = document.getElementById('errorMessage');
+      errorMessage.textContent = '';
 
-        if (result.message) {
-            errorMessage.textContent = result.message;
-            console.log(result.message);
-          }
+      if (result.message) {
+        errorMessage.textContent = result.message;
+        console.log(result.message);
+      }
 
-          if (result.title) {
-            errorMessage.textContent = result.title;
-            console.log(result.title);
-          }
-      })
+      if (result.title) {
+        errorMessage.textContent = result.title;
+        console.log(result.title);
+      }
+    })
     .catch(error => {
-        console.error('Ошибка', error);
-        window.location.href = '../profile/profile.html';
-      });
-  }
+      console.error('Ошибка', error);
+      window.location.href = '../profile/profile.html';
+    });
+}
 
 const form = document.querySelector('form');
 
 const submitButton = document.getElementById('submitButton');
-submitButton.addEventListener('click', function(event) {
-  event.preventDefault(); // Предотвращаем отправку формы
+submitButton.addEventListener('click', function (event) {
+  event.preventDefault();
   const inputFields = document.querySelectorAll('input, select');
-  const isDisabled = inputFields[0].disabled; // Берем состояние disabled первого поля в форме
-  inputFields.forEach(function(field) {
-    field.disabled = !isDisabled; // Изменяем состояние disabled для каждого поля
+  const isDisabled = inputFields[0].disabled;
+  inputFields.forEach(function (field) {
+    field.disabled = !isDisabled;
   });
-  submitButton.textContent = isDisabled ? 'Сохранить изменения' : 'Изменить данные'; // Изменяем текст кнопки
+  submitButton.textContent = isDisabled ? 'Сохранить изменения' : 'Изменить данные';
 
   if (!isDisabled) {
     const name = document.getElementById('inputName').value;
@@ -114,8 +113,7 @@ submitButton.addEventListener('click', function(event) {
     const birthday = document.getElementById('inputData').value;
     const gender = document.getElementById('selectGender').value;
     const phone = document.getElementById('inputTel').value;
-  
-    // Создание объекта с данными для отправки
+
     const data = {
       email: email,
       name: name,
@@ -125,12 +123,11 @@ submitButton.addEventListener('click', function(event) {
     };
 
     if (!phone) {
-        data.phone = null;
-      }
-  
+      data.phone = null;
+    }
+
     console.log(data);
-    // Выполнение POST-запроса
+
     changeProfilePut(data, token);
   }
 });
-  

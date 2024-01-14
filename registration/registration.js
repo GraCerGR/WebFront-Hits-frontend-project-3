@@ -53,7 +53,6 @@ function populateSpecialties(specialties) {
 }
 
 
-// Функция для выполнения POST-запроса
 async function registerPost(data) {
   const url = 'https://mis-api.kreosoft.space/api/doctor/register';
   return fetch(url, {
@@ -105,7 +104,6 @@ if (form) {
     const phone = document.getElementById('inputTel').value;
     const speciality = document.getElementById('selectSpecialties').value;
 
-    // Создание объекта с данными для отправки
     const data = {
       name: name,
       password: password,
@@ -121,7 +119,7 @@ if (form) {
     }
 
     console.log(data);
-    // Выполнение POST-запроса
+
     registerPost(data);
   });
 }

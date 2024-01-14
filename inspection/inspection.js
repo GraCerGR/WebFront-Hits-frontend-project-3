@@ -3,7 +3,7 @@ console.log(url);
 const params = new URLSearchParams(url.search);
 var token = localStorage.getItem('token');
 
-// Get the values of the parameters
+
 const previousInspectionId = params.get('previousInspectionId');
 const patient = params.get('patient');
 const repeat = params.get('repeat');
@@ -75,22 +75,20 @@ getPreviousInspections(urlPreviousInspections, token)
         console.error('Ошибка', error);
     });
 
-//const urlDiagnosis = `https://mis-api.kreosoft.space/api/dictionary/icd10?page=1&size=5`;
-//getDiagnosis(urlDiagnosis);
-
 const urlPreviousInspection = `https://mis-api.kreosoft.space/api/inspection/${previousInspectionId}`;
 getPreviousInspection(urlPreviousInspection, token);
 
-function getPreviousInspection1(){
-const optionToSelect = document.getElementById('selectPreviousInspections');//.querySelector(`option[value="${previousInspectionId}"]`);
-console.log(optionToSelect);
-console.log(previousInspectionId);
-console.log(optionToSelect.querySelector(`option[value="${previousInspectionId}"]`));
-const selectedOption = optionToSelect.querySelector(`option[value="${previousInspectionId}"]`);
-if (optionToSelect) {
-    optionToSelect.selectedIndex = selectedOption.index;
-  console.log(optionToSelect.selected);
-}}
+function getPreviousInspection1() {
+    const optionToSelect = document.getElementById('selectPreviousInspections');//.querySelector(`option[value="${previousInspectionId}"]`);
+    console.log(optionToSelect);
+    console.log(previousInspectionId);
+    console.log(optionToSelect.querySelector(`option[value="${previousInspectionId}"]`));
+    const selectedOption = optionToSelect.querySelector(`option[value="${previousInspectionId}"]`);
+    if (optionToSelect) {
+        optionToSelect.selectedIndex = selectedOption.index;
+        console.log(optionToSelect.selected);
+    }
+}
 
 
 const urlPatient = `https://mis-api.kreosoft.space/api/patient/${patient}`;
@@ -202,46 +200,46 @@ async function post(url, data, token) {
     return fetch(url, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          "Authorization": `Bearer ${token}`
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(data)
-      })
-      .then(response => response.json())
-      .then(result => {
-        const errorMessage = document.getElementById('errorMessage');
-        errorMessage.textContent = '';
-          console.log(result);
+    })
+        .then(response => response.json())
+        .then(result => {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = '';
+            console.log(result);
 
-          if (result.message) {
-            errorMessage.textContent = result.message;
-            console.log(result.message);
-          }
-          if (result.title) {
-            errorMessage.textContent = result.title;
-            console.log(result.title);
-          }
+            if (result.message) {
+                errorMessage.textContent = result.message;
+                console.log(result.message);
+            }
+            if (result.title) {
+                errorMessage.textContent = result.title;
+                console.log(result.title);
+            }
         })
-      .catch(error => {
-        console.error('Ошибка', error);
-        const errorMessage = document.getElementById('errorMessage');
-        errorMessage.textContent = 'Произошла ошибка. Пожалуйста, попробуйте еще раз.';
+        .catch(error => {
+            console.error('Ошибка', error);
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = 'Произошла ошибка. Пожалуйста, попробуйте еще раз.';
         });
-  }
+}
 
-  async function getIdFromICD10(request) {
+async function getIdFromICD10(request) {
     const url = `https://mis-api.kreosoft.space/api/dictionary/icd10?request=${request}&page=1&size=5`;
-  
+
     try {
-      const response = await fetch(url);
-      const data = await response.json();
-      const id = data.records[0].id;
-      return id;
+        const response = await fetch(url);
+        const data = await response.json();
+        const id = data.records[0].id;
+        return id;
     } catch (error) {
-      console.error('Error:', error);
-      return null;
+        console.error('Error:', error);
+        return null;
     }
-  }
+}
 
 
 
@@ -489,7 +487,7 @@ async function InspectionCreate() {
 
 const selectElement = document.getElementById('selectPreviousInspections');
 selectElement.addEventListener('change', () => {
-  const selectedOption = selectElement.options[selectElement.selectedIndex];
-  id = selectedOption.value;
-  console.log(id);
+    const selectedOption = selectElement.options[selectElement.selectedIndex];
+    id = selectedOption.value;
+    console.log(id);
 });
