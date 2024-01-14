@@ -36,8 +36,8 @@ checkedRadioSwitch.addEventListener('change', function () {
 
 let diagnosCount = 1;
 let commentCount = 1;
-let numberOfObjects1 = 0;
-let numberOfObjects2 = 0;
+let numberOfObjects1 = 1;
+let numberOfObjects2 = 1;
 let id = null;
 const checkConsultation = document.getElementById('checkConsultation');
 const selectSpecialties = document.getElementById('selectSpecialties1');
@@ -58,13 +58,13 @@ checkConsultation.addEventListener('change', function () {
         for (let i = 2; i < consultations.length; i++) {
             consultations[i].remove();
         }
-        commentCount = 1;
+        numberOfObjects1 = 1;
     }
 });
 
 
 const urlSpecialities = `https://mis-api.kreosoft.space/api/dictionary/speciality?size=30`;
-getSpecialities(urlSpecialities, commentCount);
+getSpecialities(urlSpecialities, numberOfObjects1);
 
 const urlPreviousInspections = `https://mis-api.kreosoft.space/api/patient/${patient}/inspections/search`;
 getPreviousInspections(urlPreviousInspections, token)
@@ -290,8 +290,8 @@ function formatDataTime(originalDate) {
 //------------------------Consultation--------------------
 
 document.getElementById('addConsultationBtn').addEventListener('click', function () {
-    commentCount++;
-    const consultationId = commentCount;
+    numberOfObjects1++;
+    const consultationId = numberOfObjects1;
     const newConsultation = document.createElement('div');
     newConsultation.id = consultationId;
     newConsultation.innerHTML = `
@@ -299,7 +299,7 @@ document.getElementById('addConsultationBtn').addEventListener('click', function
         <div class="form-check form-switch col">
         </div>
         <div class="col">
-          <select class="form-select" id="selectSpecialties${commentCount}" required>
+          <select class="form-select" id="selectSpecialties${numberOfObjects1}" required>
           </select>
         </div>
       </div>
@@ -309,11 +309,11 @@ document.getElementById('addConsultationBtn').addEventListener('click', function
       </div>
       <button class="btn btn-danger delete-consultation-btn my-1" data-consultation-id="${consultationId}">- Удалить консультацию</button>
     `;
-    getSpecialities(urlSpecialities, commentCount);
+    getSpecialities(urlSpecialities, numberOfObjects1);
     const consultationContainer = document.getElementById('consultation1');
     consultationContainer.parentNode.insertBefore(newConsultation, consultationContainer.nextSibling);
 
-    numberOfObjects1 = document.querySelectorAll('.delete-consultation-btn').length;
+    numberOfObjects1 = document.querySelectorAll('.delete-consultation-btn').length+1;
 });
 
 document.addEventListener('click', function (event) {
@@ -323,12 +323,16 @@ document.addEventListener('click', function (event) {
         if (consultationElement) {
             consultationElement.remove();
         }
-    } else if (event.target.classList.contains('delete-diagnos-btn')) {
+        numberOfObjects1 = document.querySelectorAll('.delete-consultation-btn').length+1;
+    } 
+   else if (event.target.classList.contains('delete-diagnos-btn')) {
         const diagnosId = event.target.dataset.diagnosId;
         const diagnosElement = document.getElementById(diagnosId);
         if (diagnosElement) {
             diagnosElement.remove();
         }
+        numberOfObjects2 = document.querySelectorAll('.delete-diagnos-btn').length+1;
+        console.log(numberOfObjects2);
     }
 });
 
@@ -342,16 +346,16 @@ inputElement1.addEventListener('input', function () {
 
 
 document.getElementById('addDiagnosBtn').addEventListener('click', function () {
-    diagnosCount++;
-    const diagnosId = diagnosCount;
+    numberOfObjects2++;
+    const diagnosId = numberOfObjects2;
     const newDiagnos = document.createElement('div');
     newDiagnos.id = diagnosId;
     newDiagnos.innerHTML = `
         <div class="d-flex align-items-center">
             <div class="col">
                 <label class="form-label fw-light py-1">Болезни</label>
-                <input type="text" class="form-control" placeholder="" id="selectDiagnoses${diagnosCount}" list="diagnoses${diagnosCount}">
-                <datalist id="diagnoses${diagnosCount}">
+                <input type="text" class="form-control" placeholder="" id="selectDiagnoses${numberOfObjects2}" list="diagnoses${numberOfObjects2}">
+                <datalist id="diagnoses${numberOfObjects2}">
                 </datalist>
             </div>
         </div>
@@ -361,19 +365,19 @@ document.getElementById('addDiagnosBtn').addEventListener('click', function () {
         <label class="form-label fw-light py-1">Тип диагноза в осмотре</label>
         <div class="form-group">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="Radios${diagnosCount}" id="Main${diagnosCount}" value="Main">
+            <input class="form-check-input" type="radio" name="Radios${numberOfObjects2}" id="Main${numberOfObjects2}" value="Main">
             <label class="form-check-label">
               Основной
             </label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="Radios${diagnosCount}" id="Concomitant${diagnosCount}" value="Concomitant" checked>
+            <input class="form-check-input" type="radio" name="Radios${numberOfObjects2}" id="Concomitant${numberOfObjects2}" value="Concomitant" checked>
             <label class="form-check-label">
               Сопутствующий
             </label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="Radios${diagnosCount}" id="Complication${diagnosCount}" value="Complication">
+            <input class="form-check-input" type="radio" name="Radios${numberOfObjects2}" id="Complication${numberOfObjects2}" value="Complication">
             <label class="form-check-label">
               Осложнение
             </label>
@@ -381,20 +385,20 @@ document.getElementById('addDiagnosBtn').addEventListener('click', function () {
         </div>
         <p id="diagnos1"></p>
         <div class="col my-2" id="addDiagnos">
-            <button class="btn btn-danger delete-diagnos-btn my-1" data-diagnos-id="${diagnosId}">- Удалить диагноз</button>
+            <button class="btn btn-danger delete-diagnos-btn my-1" data-diagnos-id="${numberOfObjects2}">- Удалить диагноз</button>
         </div>
     `;
     const diagnosContainer = document.getElementById('diagnos1');
     diagnosContainer.parentNode.insertBefore(newDiagnos, diagnosContainer.nextSibling);
 
-    const inputElement = document.getElementById(`selectDiagnoses${diagnosCount}`);
+    const inputElement = document.getElementById(`selectDiagnoses${numberOfObjects2}`);
     inputElement.addEventListener('input', function () {
         const input = event.target.value;
         const url = `https://mis-api.kreosoft.space/api/dictionary/icd10?request=${input}&page=1&size=5`;
-        getDiagnosis(url, diagnosCount);
+        getDiagnosis(url, numberOfObjects2);
     });
     ;
-    numberOfObjects2 = document.querySelectorAll('.delete-diagnos-btn').length;
+    numberOfObjects2 = document.querySelectorAll('.delete-diagnos-btn').length+1;
 });
 
 // -----------------------Заключения
@@ -436,7 +440,8 @@ cancelBtn.addEventListener('click', function () {
 async function InspectionCreate() {
     let diagnoses = [];
     console.log(numberOfObjects2);
-    for (let i = 1; i <= numberOfObjects2 + 1; i++) {
+    for (let i = 1; i <= numberOfObjects2; i++) {
+        console.log(i);
         let icdDiagnosisId = document.getElementById(`selectDiagnoses${i}`).value;
         let description = document.getElementById(`${i}DiagnosComment`).querySelector('textarea').value;
         let type = document.querySelector(`input[name="Radios${i}"]:checked`).value;
@@ -451,7 +456,7 @@ async function InspectionCreate() {
     }
 
     let consultations = [];
-    for (let i = 1; i <= numberOfObjects1 + 1; i++) {
+    for (let i = 1; i <= numberOfObjects1; i++) {
         let specialityId = document.getElementById(`selectSpecialties${i}`).value;
         let commentContent = document.getElementById(`${i}ConsultationComment`).querySelector('textarea').value;
 
