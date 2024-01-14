@@ -43,7 +43,7 @@
                     <a class="nav-link" href="../consultations/consultations.html">Консультации</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Отчёты и статистика</a>
+                    <a class="nav-link" href="../report/report.html">Отчёты и статистика</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -61,7 +61,7 @@
     <div class="container py-2">
         <div class="row align-items-center py-1">
             <div class="col">
-                <h1>Консультации</h1>
+                <h1>Отчёты и статистика</h1>
             </div>
         </div>
     </div>
@@ -108,8 +108,30 @@
             </div>
         </div>
     </div>
+    <div class="container py-2">
+        <div class="row align-items-center py-1">
+            <div class="col">
+                <h2>Таблица с данными</h2>
+            </div>
+        </div>
     </div>
-</body>
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Имя пациента</th>
+                    <th>Дата рождения</th>
+                    <th>Пол</th>
+                    <th>Посещения по МКБ-10</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+            </tbody>
+            <tfoot id="tableFooter">
+            </tfoot>
+        </table>
+    </div>
+    </body>
 
 <script src="/report/report.js"></script>
 <script src="../name.js"></script>

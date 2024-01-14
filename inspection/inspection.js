@@ -225,7 +225,7 @@ async function post(url, data, token) {
       .catch(error => {
         console.error('Ошибка', error);
         const errorMessage = document.getElementById('errorMessage');
-        errorMessage.textContent = 'Произошла ошибка при регистрации. Пожалуйста, попробуйте еще раз.';
+        errorMessage.textContent = 'Произошла ошибка. Пожалуйста, попробуйте еще раз.';
         });
   }
 

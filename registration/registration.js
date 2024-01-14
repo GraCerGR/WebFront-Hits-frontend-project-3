@@ -125,3 +125,4 @@ if (form) {
     registerPost(data);
   });
 }
+
