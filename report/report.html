@@ -108,7 +108,7 @@
             </div>
         </div>
     </div>
-    <div class="container py-2">
+    <div class="container py-2" id="tableContainer" style="display: none;">
         <div class="row align-items-center py-1">
             <div class="col">
                 <h2>Таблица с данными</h2>
@@ -116,7 +116,7 @@
         </div>
     </div>
     <div class="container">
-        <table class="table">
+        <table class="table" id="dataTable" style="display: none;">
             <thead>
                 <tr>
                     <th>Имя пациента</th>
@@ -126,11 +126,14 @@
                 </tr>
             </thead>
             <tbody id="tableBody">
+                <!-- Здесь будет генерироваться содержимое таблицы -->
             </tbody>
             <tfoot id="tableFooter">
+                <!-- Здесь будет генерироваться последняя запись с общим числом посещений для каждого кода МКБ-10 -->
             </tfoot>
         </table>
     </div>
+
     </body>
 
 <script src="/report/report.js"></script>

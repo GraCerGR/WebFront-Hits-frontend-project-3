@@ -27,6 +27,7 @@ async function getDictionary(url) {
       .then(data => {
         console.log(url);
         console.log(data);
+        showTable(true);
         const tableBody = document.getElementById("tableBody");
         tableBody.innerHTML = "";
         const tableFooter = document.getElementById("tableFooter");
@@ -37,6 +38,7 @@ async function getDictionary(url) {
         errorMessage.textContent = '';
       })
       .catch(error => {
+        showTable(false);
         console.error('Ошибка', error);
         const errorMessage = document.getElementById('errorMessage');
         errorMessage.textContent = 'Произошла ошибка при создании отчёта.';
@@ -133,7 +135,17 @@ function formatDataTime(originalDate) {
     return formattedDate;
 }
 
-
+function showTable(bool) {
+    const tableContainer = document.getElementById("tableContainer");
+    const dataTable = document.getElementById("dataTable");
+    if (bool) {
+        tableContainer.style.display = "block";
+        dataTable.style.display = "table";
+    } else {
+        tableContainer.style.display = "none";
+        dataTable.style.display = "none";
+    }
+}
 
 
 //--------------------------Multiselect-------------------------------------
